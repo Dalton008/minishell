@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/28 20:53:58 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/06/29 17:21:19 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,22 @@
 void	sort_envi(t_env *envi)
 {
 	int		i;
+	int		n;
+	int		k;
 	char	**mas;
 	char	*tmp;
 	t_env	*head;
 	int		flag;
 	int		len_envi;
+	int		len_value;
 
 	i = 0;
+	n = 0;
+	k = 0;
 	flag = 0;
 	head = envi;
 	len_envi = 0;
+	len_value = 0;
 	while (envi)
 	{
 		len_envi++;
@@ -35,7 +41,27 @@ void	sort_envi(t_env *envi)
 	mas[len_envi] = NULL;
 	while (envi)
 	{
-		mas[i] = ft_strdup(envi->value);
+		// printf("tut\n");
+		n = 0;
+		k = 0;
+		len_value = ft_strlen(envi->value);
+		mas[i] = malloc(len_value + 3);
+		mas[i][len_value + 2] = '\0';
+		while (envi->value[n])
+		{
+			if (envi->value[n] == '=')
+			{
+				mas[i][k] = envi->value[n];
+				k++;
+				mas[i][k] = '"';
+			}
+			else
+				mas[i][k] = envi->value[n];
+			n++;
+			k++;
+			if (envi->value[n] == 0 && ft_strchr(envi->value, '='))
+				mas[i][k] = '"';
+		}
 		envi = envi->next;
 		i++;
 	}
@@ -84,39 +110,68 @@ void	cmd_export(t_env *envi, char **argv, int argc)
 	int		i;
 	int		len_value;
 	int		n;
+	int		k;
+	t_env	*head;
 
 	i = 0;
 	n = 0;
+	k = 1;
+	head = envi;
 	len_value = 0;
-	if (argc == 2)
+	if (argc >= 2)
 	{
-		if (ft_strchr(argv[1], '='))
+		while (k < argc)
 		{
-			split = ft_split(argv[1], '=');
-			if (check_key(envi, split[0]))
+			i = 0;
+			n = 0;
+			envi = head;
+			if (ft_strchr(argv[k], '='))
 			{
-				while (ft_strncmp(envi->value, split[0], ft_strlen(split[0])) != 0)
-					envi = envi->next;
-				while (envi->value[i] != '=')
-					i++;
-				i++;
-				len_value = ft_strlen(split[1]);
-				while (len_value--)
+				split = ft_split(argv[k], '=');
+				if (check_key(envi, split[0]))
 				{
-					envi->value[i] = split[1][n];
-					n++;
+					while (ft_strncmp(envi->value, split[0], ft_strlen(split[0])) != 0)
+						envi = envi->next;
+					if (ft_strchr(envi->value, '='))
+					{
+						while (envi->value[i] != '=')
+							i++;
+					}
+					else
+					{
+						envi->value = ft_strjoin(envi->value, "=");
+						i++;
+					}
 					i++;
+					len_value = ft_strlen(split[1]);
+					while (len_value--)
+					{
+						envi->value[i] = split[1][n];
+						n++;
+						i++;
+					}
+					envi->value[i] = '\0';
 				}
-				envi->value[i] = '\0';
+				else
+				{
+					while (envi->next)
+						envi = envi->next;
+					envi->next = malloc(sizeof(t_env));
+					envi = envi->next;
+					envi->value = ft_strdup(argv[k]);
+					envi->next = NULL;
+				}
 			}
 			else
 			{
 				while (envi->next)
 					envi = envi->next;
 				envi->next = malloc(sizeof(t_env));
-				envi->value = ft_strdup(argv[1]);
+				envi = envi->next;
+				envi->value = ft_strdup(argv[k]);
 				envi->next = NULL;
 			}
+			k++;
 		}
 	}
 	else if (argc == 1)

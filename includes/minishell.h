@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/28 20:58:19 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/06/30 20:40:42 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,30 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "get_next_line.h"
+# include <sys/types.h>
+# include <dirent.h>
+# include <string.h>
 
 typedef struct s_env
 {
 	char			*value;
 	struct s_env	*next;
 }				t_env;
+
+typedef struct s_parse
+{
+	int	pipe;
+}				t_parse;
+
+typedef struct s_pipe
+{
+	char	**cmd;
+	char	**path;
+	char	*pt;
+	int		i;
+	int		op;
+	int		file;
+}				t_pipe;
 
 // commands
 void	cmd_pwd(t_env *envi);
@@ -49,5 +67,8 @@ int		ft_strncmp(const char *str1, const char *str2, size_t size);
 
 //init
 void	init_env(t_env	**envi, char **env);
+
+//pipe
+int		pipex(int argc, char **argv, char **env);
 
 #endif

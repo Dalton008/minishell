@@ -6,13 +6,13 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/28 19:08:56 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/06/30 20:06:41 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_path(t_env *envi)
+static char	**get_path(t_env *envi)
 {
 	char	**path;
 
@@ -25,7 +25,7 @@ char	**get_path(t_env *envi)
 	return (path);
 }
 
-char	*join_path_to_file(char *path, char *cmd)
+static char	*join_path_to_file(char *path, char *cmd)
 {
 	char	*result;
 	char	*for_free;

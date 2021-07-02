@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 11:26:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/28 19:20:08 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/06/29 12:17:59 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	cmd_env(t_env *envi)
 {
 	while (envi)
 	{
-		printf("%s\n", envi->value);
+		if (ft_strchr(envi->value, '='))
+			printf("%s\n", envi->value);
 		envi = envi->next;
 	}
 }

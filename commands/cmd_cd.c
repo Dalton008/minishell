@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 18:23:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/28 19:08:03 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/06/29 18:45:51 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,43 @@ void	cmd_cd(t_env *envi, char *str)
 	t_env	*head;
 	int		n;
 	int		i;
+	DIR		*dir;
 
-	n = 3;
+	n = 4;
 	i = 0;
 	head = envi;
-	while (envi)
+	dir = opendir(str);
+	if (dir == 0)
 	{
-		if (ft_strncmp(envi->value, "OLDPWD", 5) == 0)
-		{
-			oldpwd = ft_strdup(envi->value + 5);
-			break ;
-		}
-		envi = envi->next;
+		printf("No such file or directory\n");
+		return ;
 	}
-	envi = head;
-	while (envi)
+	else
 	{
-		if (ft_strncmp(envi->value, "PWD", 3) == 0)
+		closedir(dir);
+		while (envi)
 		{
-			while (str[i])
+			if (ft_strncmp(envi->value, "OLDPWD", 6) == 0)
 			{
-				envi->value[n] = str[i];
-				i++;
-				n++;
+				oldpwd = ft_strdup(envi->value + 7);
+				break ;
 			}
-			envi->value[n] = '\0';
+			envi = envi->next;
+		}
+		envi = head;
+		while (envi)
+		{
+			if (ft_strncmp(envi->value, "PWD", 3) == 0)
+			{
+				while (str[i])
+				{
+					envi->value[n] = str[i];
+					i++;
+					n++;
+				}
+				envi->value[n] = '\0';
+			}
+			envi = envi->next;
 		}
 	}
 }
