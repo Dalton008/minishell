@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:44:47 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/30 20:40:19 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/02 18:34:55 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,18 @@ int	main(int argc, char **argv, char **env)
 		gets(line);
 		preparse(par, line);
 		split = NULL;
-		split = ft_split(line, ' ');
+		split = ft_split(line, '|');
+		// split = ft_split(line, ' ');
 		len_split = ft_splitlen(split);
 		if (par->pipe != 0)
 		{
-			pipex(len_split, split, env);
+			pipex(par->pipe, split, env);
 		}
-		// // while (split[i])
-		// // {
-		// // 	printf("%s\n", split[i]);
-		// // 	i++;
-		// // }
+		// while (split[i])
+		// {
+		// 	printf("%s\n", split[i]);
+		// 	i++;
+		// }
 		// if (ft_strcmp(split[0], "pwd") == 0)
 		// 	cmd_pwd(envi);
 		// else if (ft_strcmp(split[0], "echo") == 0)

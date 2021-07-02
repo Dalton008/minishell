@@ -1,82 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/23 16:24:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/29 13:14:45 by mjammie          ###   ########.fr       */
+/*   Created: 2021/04/18 19:31:42 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/02 18:19:05 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/get_next_line.h"
-
-char	*ft_strcpy(char *dst, char *src)
-{
-	int	n;
-
-	n = 0;
-	if (!dst || !src)
-		return (0);
-	while (src[n])
-	{
-		dst[n] = src[n];
-		n++;
-	}
-	dst[n] = 0;
-	return (dst);
-}
-
-char	*ft_strdup(const char *str)
-{
-	char	*n_str;
-	int		n;
-	int		len;
-
-	n = 0;
-	len = 0;
-	while (str[len])
-		len++;
-	n_str = (char *) malloc(sizeof(*str) * (len + 1));
-	if (n_str == 0)
-		return (0);
-	while (str[n] != 0)
-	{
-		n_str[n] = str[n];
-		n++;
-	}
-	n_str[n] = 0;
-	return (n_str);
-}
-
-char	*ft_strchr(const char *str, int c)
-{
-	int		n;
-
-	n = 0;
-	while (str[n])
-	{
-		if (str[n] == c)
-			return ((char *)str + n);
-		n++;
-	}
-	if (c == 0)
-		return ((char *)str + n);
-	return (0);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != 0)
-		i++;
-	return (i);
-}
+#include "../includes/minishell.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

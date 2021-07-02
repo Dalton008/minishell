@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/17 15:44:44 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/02 18:12:06 by mjammie          ###   ########.fr       */
+/*   Created: 2021/04/16 12:02:12 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/02 18:05:50 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_strchr(const char *str, int c)
+size_t	ft_strlen(const char *str)
 {
-	int		n;
+	int	i;
 
-	n = 0;
-	while (str[n])
+	i = 0;
+	while (*str != 0)
 	{
-		if (str[n] == c)
-			return ((char *)str + n);
-		n++;
+		i++;
+		str++;
 	}
-	if (c == 0)
-		return ((char *)str + n);
-	return (0);
+	return (i);
 }
