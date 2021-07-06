@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_cmd.c                                        :+:      :+:    :+:   */
+/*   other_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/30 20:06:41 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/06 14:00:26 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ static char	*join_path_to_file(char *path, char *cmd)
 	return (result);
 }
 
-void	check_cmd(char **cmd, t_env *envi, char **env)
+void	other_cmd(char **cmd, t_env *envi, char **env)
 {
 	char	**paths;
 	char	*path;
 	char	**c;
 	int		i;
 	int		op;
+	pid_t	pid;
 
 	i = 0;
 	c = ft_split(cmd[0], ' ');
@@ -56,7 +57,12 @@ void	check_cmd(char **cmd, t_env *envi, char **env)
 			break ;
 		i++;
 	}
-	if (op == -1)
-		perror("Invalid command!\n");
-	execve(path, c, env);
+	pid = fork();
+	if (pid == 0)
+	{
+		if (op == -1)
+			perror("Invalid command!\n");
+		execve(path, cmd, env);
+	}
+	
 }

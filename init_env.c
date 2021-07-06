@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 11:28:13 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/28 19:27:46 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/05 19:06:32 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,6 @@ int	env_size(char **env)
 		i++;
 	return (i);
 }
-
-// char	**get_path(char **env)
-// {
-// 	char	**path;
-// 	int		i;
-
-// 	i = 0;
-// 	while (env[i])
-// 	{
-// 		if ((ft_strncmp(env[i], "PATH=", 5)) == 0)
-// 			path = ft_split(env[i] + 5, ':');
-// 		i++;
-// 	}
-// 	return (path);
-// }
 
 void	init_env(t_env	**envi, char **env)
 {

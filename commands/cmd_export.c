@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/06/29 17:21:19 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/06 13:36:51 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	sort_envi(t_env *envi)
 	mas[len_envi] = NULL;
 	while (envi)
 	{
-		// printf("tut\n");
 		n = 0;
 		k = 0;
 		len_value = ft_strlen(envi->value);

@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/02 19:23:14 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/06 21:10:05 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <string.h>
+# include <signal.h>
 
 typedef struct s_env
 {
@@ -35,16 +36,11 @@ typedef struct s_parse
 	int	pipe;
 }				t_parse;
 
-typedef struct s_history //история?
-{
-	char				*value;
-	struct s_history	*next;
-	struct s_history	*prev;
-}				t_history;
-
 typedef struct s_pipe
 {
+	int		pfd[100][2];
 	char	**cmd;
+	char	*cmdd;
 	char	**path;
 	char	*pt;
 	int		i;
@@ -59,7 +55,7 @@ void	cmd_env(t_env *envi);
 void	cmd_export(t_env *envi, char **argv, int argc);
 void	cmd_cd(t_env *envi, char *str);
 void	cmd_unset(t_env *envi, char *key);
-void	check_cmd(char **cmd, t_env *envi, char **env);
+void	other_cmd(char **cmd, t_env *envi, char **env);
 void	cmd_exit(t_env *envi);
 
 // utils
@@ -77,6 +73,10 @@ char	*ft_strchr(const char *str, int c);
 void	init_env(t_env	**envi, char **env);
 
 //pipe
-int		pipex(int argc, char **argv, char **env);
+int		pipex(int count_pipes, char **split, char **env);
+// int		pipex(int count_pipes, char **split, char **env, t_env *envi);
+
+//signal
+void	signal_init(void);
 
 #endif

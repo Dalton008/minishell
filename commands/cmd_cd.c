@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 18:23:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/02 18:02:54 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/06 13:36:32 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ void	cmd_cd(t_env *envi, char *str)
 {
 	char	*oldpwd;
 	t_env	*head;
-	int		n;
-	int		i;
 	int		dir;
-
-	n = 4;
-	i = 0;
+	char	*buf;
+	char 	*pwd;
+	
+	buf = NULL;
 	head = envi;
+	oldpwd = getcwd(buf, 0);
 	dir = chdir(str);
+	pwd = getcwd(buf, 0); //выделяет память!
 	if (dir == -1)
 	{
 		printf("No such file or directory\n");
@@ -35,7 +36,9 @@ void	cmd_cd(t_env *envi, char *str)
 		{
 			if (ft_strncmp(envi->value, "OLDPWD", 6) == 0)
 			{
-				oldpwd = ft_strdup(envi->value + 7);
+				envi->value[0] = 0;
+				envi->value = ft_strjoin(envi->value, "OLDPWD=");
+				envi->value = ft_strjoin(envi->value, oldpwd);
 				break ;
 			}
 			envi = envi->next;
@@ -45,8 +48,9 @@ void	cmd_cd(t_env *envi, char *str)
 		{
 			if (ft_strncmp(envi->value, "PWD", 3) == 0)
 			{
-				envi->value = ft_strjoin(envi->value, "/");
-				envi->value = ft_strjoin(envi->value, str);
+				envi->value[0] = 0;
+				envi->value = ft_strjoin(envi->value, "PWD=");
+				envi->value = ft_strjoin(envi->value, pwd);
 				break ;
 			}
 			envi = envi->next;
