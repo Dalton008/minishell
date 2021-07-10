@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex copy.c                                       :+:      :+:    :+:   */
+/*   pipex_copy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 20:05:08 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/06 14:21:22 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/07 15:40:18 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	create_pipes(t_pipe *pipes, int	count)
 	}
 }
 
-void	excute_dup(t_pipe *pipes, int pipe_num)
+void	execute_dup(t_pipe *pipes, int pipe_num)
 {
 	if (pipes->i == 0)
 	{
@@ -74,32 +74,12 @@ void	excute_dup(t_pipe *pipes, int pipe_num)
 	}
 }
 
-int	check_cmd(char *cmd, t_env *envi, int len_split, char **split)
-{
-	if (ft_strcmp(cmd, "pwd") == 0)
-		cmd_pwd(envi);
-	else if (ft_strcmp(cmd, "echo") == 0)
-		cmd_echo(len_split, split, envi);
-	else if (ft_strcmp(cmd, "cd") == 0)
-		cmd_cd(envi, split[1]);
-	else if (ft_strcmp(cmd, "env") == 0)
-		cmd_env(envi);
-	else if (ft_strcmp(cmd, "export") == 0)
-		cmd_export(envi, split, len_split);
-	else if (ft_strcmp(cmd, "unset") == 0)
-		cmd_unset(envi, split[1]);
-	else if (ft_strcmp(cmd, "exit") == 0)
-		cmd_exit(envi);
-	return (0);
-}
-
-void	excute_cmd(t_pipe *pipes, char **env, char *cmd, int pipe_num, t_env *envi, char **split)
+void	execute_cmd(t_pipe *pipes, char **env, char *cmd, int pipe_num)
 {
 	pid_t	pid;
 	int		e;
 	char	**split_cmd;
 	int		i;
-	// char	*cmd;
 
 	i = 0;
 	split_cmd = ft_split(cmd, ' ');
@@ -114,25 +94,39 @@ void	excute_cmd(t_pipe *pipes, char **env, char *cmd, int pipe_num, t_env *envi,
 	pid = fork();
 	if (pid == 0)
 	{
-
-		if (!check_cmd(split_cmd[0], envi, pipe_num, split))
-		{
-			excute_dup(pipes, pipe_num);
-			e = execve(pipes->pt, split_cmd, env);
-			if (e == -1)
-			{
-				printf("ERROR on execve\n");
-			}
-		}
-		// else
-		// {
-		// 	excute_dup(pipes, pipe_num);
-		// }
+		execute_dup(pipes, pipe_num);
+		e = execve(pipes->pt, split_cmd, env);
+		if (e == -1)
+			perror("ERROR on execve");
 		exit (1);
 	}
 }
 
-int	pipex(int count_pipes, char **split, char **env, t_env *envi)
+int	check_cmd(char **split, t_pipe	pipes)
+{
+	if (ft_strcmp(split[pipes.i], "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(split[pipes.i], "echo") == 0)
+		return (1);
+	else if (ft_strcmp(split[pipes.i], "cd") == 0)
+		return (1);
+	else if (ft_strcmp(split[pipes.i], "env") == 0)
+		return (1);
+	else if (ft_strcmp(split[pipes.i], "export") == 0)
+		return (1);
+	else if (ft_strcmp(split[pipes.i], "unset") == 0)
+		return (1);
+	else if (ft_strcmp(split[pipes.i], "exit") == 0)
+		return (1);
+	return (0);
+}
+
+void	buildins_cmd(char *cmd)
+{
+
+}
+
+int	pipex(int count_pipes, char **split, char **env)
 {
 	t_pipe	pipes;
 	int		*pfd;
@@ -144,16 +138,18 @@ int	pipex(int count_pipes, char **split, char **env, t_env *envi)
 	create_pipes(&pipes, count_pipes);
 	get_path(env, &pipes);
 	pipes.i = 0;
-	// exc_dup(&pipes, count_pipes);
 	dup2(pipes.pfd[0][0], 0);
 	while (pipes.i < count_pipes)
 	{
-		excute_cmd(&pipes, env, split[pipes.i], count_pipes, envi, split);
+		if (check_cmd(split, pipes))
+			buildins_cmd()
+		else
+			execute_cmd(&pipes, env, split[pipes.i], count_pipes);
 		pipes.i++;
 	}
 	dup2(fd_copy[1], pipes.pfd[count_pipes][1]);
 	dup2(fd_copy[0], pipes.pfd[count_pipes][0]);
 	close(pipes.pfd[0][0]);
-	waitpid(-1, 0, 0);
+	waitpid(0, 0, 0);
 	return (0);
 }

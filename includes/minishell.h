@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/06 21:10:05 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/10 19:11:55 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ typedef struct s_env
 
 typedef struct s_parse
 {
-	int	pipe;
+	int		pipe;
+	int		redir;
 }				t_parse;
 
 typedef struct s_pipe
@@ -47,6 +48,13 @@ typedef struct s_pipe
 	int		op;
 	int		file;
 }				t_pipe;
+
+//readline
+char	*readline(const char *prompt);
+int		add_history(const char *string_for_history);
+int		rl_on_new_line(void);
+void	dl_redisplay(void);
+void	rl_replace_line(const char *buffer, int val);
 
 // commands
 void	cmd_pwd(t_env *envi);
@@ -78,5 +86,6 @@ int		pipex(int count_pipes, char **split, char **env);
 
 //signal
 void	signal_init(void);
+void	my_sigd(void);
 
 #endif

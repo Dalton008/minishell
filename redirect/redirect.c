@@ -6,13 +6,13 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:07:41 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/05 19:10:15 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/09 15:49:06 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// void	redirect()
-// {
+void	redirect()
+{
 	
-// }
+}

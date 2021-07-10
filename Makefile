@@ -14,7 +14,7 @@ LIST_PIPE = pipe/pipex.c
 
 LIST_SIGNAL = signal/signal_init.c
 
-READLINE = -lreadline
+READLINE =  -L/Users/$(USER)/.brew/Cellar/readline/8.1/lib/ -lreadline
 
 FLAGS = 
 
