@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/10 19:11:55 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/11 19:08:57 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,37 @@ typedef struct s_env
 
 typedef struct s_parse
 {
-	int		pipe;
-	int		redir;
+	int				count_r;
+	int				redir1; //>
+	int				redir2; //<
+	int				redir3; //>>
+	int				redir4; //<<
+	char			*cmd;
+	char			*line;
+	char			**files_name;
+	char			**split;
+	struct s_parse	*next;
 }				t_parse;
 
 typedef struct s_pipe
 {
 	int		pfd[100][2];
 	char	**cmd;
-	char	*cmdd;
 	char	**path;
 	char	*pt;
 	int		i;
 	int		op;
 	int		file;
 }				t_pipe;
+
+typedef struct s_all
+{
+	int				count_fd;
+	int				count_pipe;
+	int				pfd[100][2];
+	struct s_parse	*parse;
+	int				f;
+}				t_all;
 
 //readline
 char	*readline(const char *prompt);
@@ -71,14 +87,24 @@ int		ft_strcmp(const char *str1, const char *str2);
 char	**ft_split(char const *s, char c);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
+void	ft_putnbr_fd(int n, int fd);
 int		ft_strncmp(const char *str1, const char *str2, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *str);
 char	*ft_strdup(const char *str);
 char	*ft_strchr(const char *str, int c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+
+//parse
+void	parse_redir_pipe(t_all *all, char *line);
+void	print_struct(t_all *all);//временная для вывода
+t_parse	*new_node(void);
+void	work_with_cmd(t_parse *parse);
+void	work_with_files(t_parse *parse);
 
 //init
 void	init_env(t_env	**envi, char **env);
+void	work_with_fd(char *line, t_all *all);
 
 //pipe
 int		pipex(int count_pipes, char **split, char **env);
@@ -86,6 +112,6 @@ int		pipex(int count_pipes, char **split, char **env);
 
 //signal
 void	signal_init(void);
-void	my_sigd(void);
+void	ctrl_d_hook(void);
 
 #endif
