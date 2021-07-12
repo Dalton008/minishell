@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:44:47 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 17:35:13 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/12 20:41:59 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ int	main(int argc, char **argv, char **env)
 		line = readline("minishell> ");
 		if (line == NULL)
 			ctrl_d_hook();
+		if (line && line[0] == '\0')
+		{
+      		free(line);
+      		continue ;
+    	}
 		split = NULL;
 		add_history(line);
 		rl_redisplay();
@@ -60,34 +65,11 @@ int	main(int argc, char **argv, char **env)
 		{
 			if (all->count_pipe != 0)
 			{
-				// split = ft_split(line, '|');
-				
 				len_split = ft_splitlen(all->parse->split);
 				pipex(len_split, all->parse->split, env, all);
 				break ;
 			}
-			// PIPEX
-			
-			// split = ft_split(line, '|');
-			// len_split = ft_splitlen(split);
-			// if (par->pipe != 0)
-			// {
-			// 	// pipex(par->pipe, split, env);
-			// 	pipex(len_split, split, env);
-			// 	break ;
-			// }
-			// PIPEX
-			
-			// while (split[i])
-			// {
-			// 	printf("%s\n", split[i]);
-			// 	i++;
-			// }
 			else
-			// {
-			// 	split = ft_split(line, ' ');
-			// 	len_split = ft_splitlen(split);
-			// while (all->parse)
 			{
 				if (ft_strcmp(all->parse->split[0], "pwd") == 0)
 					cmd_pwd(envi, all);
@@ -103,6 +85,21 @@ int	main(int argc, char **argv, char **env)
 					cmd_unset(envi, all->parse->split[1]);
 				else if (ft_strcmp(all->parse->split[0], "exit") == 0)
 					cmd_exit(envi);
+				else if (ft_strcmp(all->parse->split[0], "<<") == 0)
+				{
+					while (42)
+					{
+						line = readline("> ");
+						if (line == NULL)
+						{
+							ft_putstr_fd("\e[1A\e[0C ", 1);
+							break ;
+						}
+						if (ft_strcmp(line, all->parse->split[1]) == 0)
+							break ;
+						rl_on_new_line();
+					}
+				}
 				else
 				{
 					other_cmd(all->parse->split, envi, env, all);
@@ -112,7 +109,5 @@ int	main(int argc, char **argv, char **env)
 			all->parse = all->parse->next;
 		}
 		all->parse = par;
-		// free(all->parse); // доработать фри
-		// all->parse = NULL;
 	}
 }

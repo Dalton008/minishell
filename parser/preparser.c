@@ -6,13 +6,13 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 12:10:33 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 16:31:42 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/12 19:57:33 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-//echo $USER > file > file2 | env | grep USER > file3
+//echo "$USER > file > file2 | env | grep USER > file3
 
 t_parse	*new_node(void)
 {
@@ -181,3 +181,19 @@ void	work_with_files(t_parse *parse)
 		parse = parse->next;
 	}
 }
+
+// void	vvv(t_all *all)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (all->parse)
+// 	{
+// 		i = 0;
+// 		while (all->parse->split[i])
+// 		{
+// 			if ()
+// 		}
+// 		all->parse = all->parse->next;
+// 	}
+// }

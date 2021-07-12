@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 18:15:33 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/12 18:47:44 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	other_cmd(char **cmd, t_env *envi, char **env, t_all *all)
 		all->fd_iter++;
 		z++;
 	}
-		all->fd_iter++;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -87,5 +86,4 @@ void	other_cmd(char **cmd, t_env *envi, char **env, t_all *all)
 		execve(path, tmp, env);
 		close_fd(all);
 	}
-	wait(0);
 }

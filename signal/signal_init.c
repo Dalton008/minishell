@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 20:31:36 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/11 17:34:15 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/12 20:42:16 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	my_sigint(int val)
 
 void	ctrl_d_hook(void)
 {
-	ft_putstr_fd("\e[1A\e[11C" "exit\n", 1);
+	ft_putstr_fd("\e[1A\e[12C" "exit\n", 1);
 	exit (1);
 }
 

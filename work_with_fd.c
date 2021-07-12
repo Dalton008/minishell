@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 11:21:49 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 16:22:39 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/12 18:56:34 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	work_with_fd(char *line, t_all *all)
 		{
 			pipe(mfd);
 			all->pfd[n][1] = mfd[1];
-			all->pfd[n][0] = mfd[0]; //all->pfd[n + 1][0] = mfd[0];
+			all->pfd[n + 1][0] = mfd[0]; //all->pfd[n + 1][0] = mfd[0];
 			n++;
 		}
 		if (line[i] == '>')
