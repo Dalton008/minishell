@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 12:10:33 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/11 16:19:07 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/12 16:31:42 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_parse	*new_node(void)
 	t_parse	*new;
 
 	new = (struct s_parse *)malloc(sizeof(t_parse));
+	new->count_r = 0;
 	new->redir1 = 0;
 	new->redir2 = 0;
 	new->redir3 = 0;
@@ -93,22 +94,28 @@ void	parse_redir_pipe(t_all *all, char *line)
 		{
 			if (line[i + 1] == '>')
 			{
+				all->parse->count_r++;
 				all->parse->redir3++;
 				i++;
 			}
 			else
+			{
+				all->parse->count_r++;
 				all->parse->redir1++;
+			}
 			all->count_fd++;
 		}
 		if (line[i] == '<')
 		{
 			if (line[i + 1] == '<')
 			{
+				all->parse->count_r++;
 				all->parse->redir4++;
 				i++;
 			}
 			else
 			{
+				all->parse->count_r++;
 				all->parse->redir2++;
 				all->count_fd++;
 			}
@@ -138,7 +145,7 @@ void	work_with_cmd(t_parse *parse)
 		}
 		else
 		{
-			while (parse->split[i] && !ft_strchr("<>", parse->split[i + 1][0]))
+			while (parse->split[i] && parse->split[i + 1] && !ft_strchr("<>", parse->split[i + 1][0]))
 			{
 				parse->cmd = ft_strjoin(parse->split[i], " ");
 				parse->cmd = ft_strjoin(parse->cmd, parse->split[i + 1]);

@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/11 19:08:57 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/12 18:11:43 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ typedef struct s_all
 	int				count_fd;
 	int				count_pipe;
 	int				pfd[100][2];
+	int				fd_iter;
+	int				tm_fd1;
+	int				tm_fd0;
 	struct s_parse	*parse;
 	int				f;
 }				t_all;
@@ -73,16 +76,17 @@ void	dl_redisplay(void);
 void	rl_replace_line(const char *buffer, int val);
 
 // commands
-void	cmd_pwd(t_env *envi);
-char	*cmd_echo(int argc, char **argv, t_env *envi);
-void	cmd_env(t_env *envi);
-void	cmd_export(t_env *envi, char **argv, int argc);
+void	cmd_pwd(t_env *envi, t_all *all);
+char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all);
+void	cmd_env(t_env *envi, t_all *all);
+void	cmd_export(t_env *envi, char **argv, int argc, t_all *all);
 void	cmd_cd(t_env *envi, char *str);
 void	cmd_unset(t_env *envi, char *key);
-void	other_cmd(char **cmd, t_env *envi, char **env);
+void	other_cmd(char **cmd, t_env *envi, char **env, t_all *all);
 void	cmd_exit(t_env *envi);
 
 // utils
+int		ft_splitlen(char **str);
 int		ft_strcmp(const char *str1, const char *str2);
 char	**ft_split(char const *s, char c);
 void	ft_putchar_fd(char c, int fd);
@@ -105,9 +109,11 @@ void	work_with_files(t_parse *parse);
 //init
 void	init_env(t_env	**envi, char **env);
 void	work_with_fd(char *line, t_all *all);
+void	dup_fd(t_all *all);
+void	close_fd(t_all *all);
 
 //pipe
-int		pipex(int count_pipes, char **split, char **env);
+int		pipex(int count_pipes, char **split, char **env, t_all *all);
 // int		pipex(int count_pipes, char **split, char **env, t_env *envi);
 
 //signal

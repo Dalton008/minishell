@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 20:05:08 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/11 12:05:46 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/12 14:10:49 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ static char	*join_path_to_file(char *path, char *cmd)
 	return (result);
 }
 
-void	create_pipes(t_pipe *pipes, int	count)
-{
-	int	i;
+// void	create_pipes(t_pipe *pipes, int	count)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < count)
-	{
-		pipe(pipes->pfd[i]);
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < count)
+// 	{
+// 		pipe(pipes->pfd[i]);
+// 		i++;
+// 	}
+// }
 
 void	execute_dup(t_pipe *pipes, int pipe_num)
 {
@@ -76,7 +76,7 @@ void	execute_dup(t_pipe *pipes, int pipe_num)
 	}
 }
 
-void	execute_cmd(t_pipe *pipes, char **env, char *cmd, int pipe_num)
+void	execute_cmd(t_pipe *pipes, char **env, char *cmd, int pipe_num, t_all *all)
 {
 	pid_t	pid;
 	int		e;
@@ -84,7 +84,7 @@ void	execute_cmd(t_pipe *pipes, char **env, char *cmd, int pipe_num)
 	int		i;
 
 	i = 0;
-	printf("%s\n", cmd);
+	printf("cmd={%s}\n", cmd);
 	split_cmd = ft_split(cmd, ' ');
 	while (pipes->path[i])
 	{
@@ -94,41 +94,53 @@ void	execute_cmd(t_pipe *pipes, char **env, char *cmd, int pipe_num)
 			break ;
 		i++;
 	}
+	all->fd_iter++;
 	pid = fork();
 	if (pid == 0)
 	{
-		printf(">%s<\n", pipes->pt);
-		execute_dup(pipes, pipe_num);
+		printf("fdi=%d\n", all->fd_iter);
+		dup_fd(all);
+		// execute_dup(pipes, pipe_num);
 		e = execve(pipes->pt, split_cmd, env);
 		if (e == -1)
 			printf("ERROR on execve\n");
+		close_fd(all);
 		exit (0);
 	}
 }
 
-int	pipex(int count_pipes, char **split, char **env)
+int	pipex(int count_pipes, char **split, char **env, t_all *all)
 {
 	t_pipe	pipes;
 	int		*pfd;
-	int fd_copy[2];
+	// int fd_copy[2];
 	int		i;
 
 	i = 0;
-	fd_copy[0] = dup(0);
-	fd_copy[1] = dup(1);
-	create_pipes(&pipes, count_pipes);
+	// fd_copy[0] = dup(0);
+	// fd_copy[1] = dup(1);
+	// create_pipes(&pipes, count_pipes);
 	get_path(env, &pipes);
 	pipes.i = 0;
-	dup2(pipes.pfd[0][0], 0);
-	while (pipes.i < count_pipes)
+	// dup2(pipes.pfd[0][0], 0);
+
+	// while (pipes.i < count_pipes)
+	// {
+	// 	execute_cmd(&pipes, env, split[pipes.i], count_pipes, all);
+	// 	pipes.i++;
+	// }
+
+	while (all->parse)
 	{
-		execute_cmd(&pipes, env, split[pipes.i], count_pipes);
-		pipes.i++;
+		execute_cmd(&pipes, env, all->parse->cmd, count_pipes, all);
+		// pipes.i++;
+		all->parse = all->parse->next;
 	}
-	dup2(fd_copy[1], pipes.pfd[count_pipes][1]);
-	dup2(fd_copy[0], pipes.pfd[count_pipes][0]);
-	close(pipes.pfd[0][0]);
-	wait(0);
-	// waitpid(0, 0, 0);
+
+	// dup2(fd_copy[1], pipes.pfd[count_pipes][1]);
+	// dup2(fd_copy[0], pipes.pfd[count_pipes][0]);
+	// close(pipes.pfd[0][0]);
+	// wait(0);
+	waitpid(0, 0, 0);
 	return (0);
 }
