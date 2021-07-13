@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:44:47 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 20:41:59 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/13 14:45:41 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	main(int argc, char **argv, char **env)
 	all = malloc(sizeof(t_all));
 	par = new_node();
 	all->parse = par;
-	init_env(&envi, env);
 	signal_init();
+	init_env(&envi, env);
 	while (42)
 	{
 		all->count_fd = 0;
@@ -66,7 +66,7 @@ int	main(int argc, char **argv, char **env)
 			if (all->count_pipe != 0)
 			{
 				len_split = ft_splitlen(all->parse->split);
-				pipex(len_split, all->parse->split, env, all);
+				pipex(len_split, all->parse->split, /*env,*/ all, envi);
 				break ;
 			}
 			else
@@ -91,10 +91,7 @@ int	main(int argc, char **argv, char **env)
 					{
 						line = readline("> ");
 						if (line == NULL)
-						{
-							ft_putstr_fd("\e[1A\e[0C ", 1);
 							break ;
-						}
 						if (ft_strcmp(line, all->parse->split[1]) == 0)
 							break ;
 						rl_on_new_line();
@@ -102,8 +99,7 @@ int	main(int argc, char **argv, char **env)
 				}
 				else
 				{
-					other_cmd(all->parse->split, envi, env, all);
-					wait(0);
+					other_cmd(all->parse->split, envi, all);
 				}
 			}
 			all->parse = all->parse->next;

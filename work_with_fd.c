@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 11:21:49 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 18:56:34 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/13 18:34:05 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ void	work_with_fd(char *line, t_all *all)
 
 void	dup_fd(t_all *all)
 {
-	printf("fd1={%d}\n", all->pfd[all->fd_iter][1]);
 	printf("fd0={%d}\n", all->pfd[all->fd_iter][0]);
+	printf("fd1={%d}\n", all->pfd[all->fd_iter][1]);
 	all->tm_fd1 = dup(1);
 	all->tm_fd0 = dup(0);
 	dup2(all->pfd[all->fd_iter][1], 1);
@@ -105,9 +105,15 @@ void	dup_fd(t_all *all)
 void	close_fd(t_all *all)
 {
 	if (all->pfd[all->fd_iter][0] != 0)
+	{
+		printf("closefd0={%d}\n", all->pfd[all->fd_iter][0]);
 		close(all->pfd[all->fd_iter][0]);
+	}
 	if (all->pfd[all->fd_iter][1] != 1)
+	{
+		printf("closefd1={%d}\n", all->pfd[all->fd_iter][1]);
 		close(all->pfd[all->fd_iter][1]);
+	}
 	dup2(all->tm_fd1, 1);
 	dup2(all->tm_fd0, 0);
 }

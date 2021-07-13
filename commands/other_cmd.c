@@ -6,38 +6,13 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 18:47:44 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/13 14:10:29 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char	**get_path(t_env *envi)
-{
-	char	**path;
-
-	while (envi)
-	{
-		if ((ft_strncmp(envi->value, "PATH=", 5)) == 0)
-			path = ft_split(envi->value + 5, ':');
-		envi = envi->next;
-	}
-	return (path);
-}
-
-static char	*join_path_to_file(char *path, char *cmd)
-{
-	char	*result;
-	char	*for_free;
-
-	for_free = cmd;
-	cmd = ft_strjoin("/", cmd);
-	result = ft_strjoin(path, cmd);
-	free(cmd);
-	return (result);
-}
-
-void	other_cmd(char **cmd, t_env *envi, char **env, t_all *all)
+void	other_cmd(char **cmd, t_env *envi, t_all *all)
 {
 	char	**paths;
 	char	*path;
@@ -83,7 +58,8 @@ void	other_cmd(char **cmd, t_env *envi, char **env, t_all *all)
 		dup_fd(all);
 		if (op == -1)
 			perror("Invalid command!\n");
-		execve(path, tmp, env);
+		execve(path, tmp, NULL);
 		close_fd(all);
 	}
+	waitpid(0, 0, 0);
 }

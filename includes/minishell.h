@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 20:42:08 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/13 14:07:51 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	cmd_env(t_env *envi, t_all *all);
 void	cmd_export(t_env *envi, char **argv, int argc, t_all *all);
 void	cmd_cd(t_env *envi, char *str);
 void	cmd_unset(t_env *envi, char *key);
-void	other_cmd(char **cmd, t_env *envi, char **env, t_all *all);
+void	other_cmd(char **cmd, t_env *envi, t_all *all);
 void	cmd_exit(t_env *envi);
 
 // utils
@@ -98,6 +98,8 @@ size_t	ft_strlen(const char *str);
 char	*ft_strdup(const char *str);
 char	*ft_strchr(const char *str, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	**get_path(t_env *envi);
+char	*join_path_to_file(char *path, char *cmd);
 
 //parse
 void	parse_redir_pipe(t_all *all, char *line);
@@ -113,7 +115,7 @@ void	dup_fd(t_all *all);
 void	close_fd(t_all *all);
 
 //pipe
-int		pipex(int count_pipes, char **split, char **env, t_all *all);
+int		pipex(int count_pipes, char **split, /*char **env,*/ t_all *all, t_env *envi);
 // int		pipex(int count_pipes, char **split, char **env, t_env *envi);
 
 //signal
