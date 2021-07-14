@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 14:06:41 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/13 14:08:02 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/14 12:45:41 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*join_path_to_file(char *path, char *cmd)
 	char	*for_free;
 
 	for_free = cmd;
+	if (ft_strchr(cmd, '/'))
+		return (cmd);
 	cmd = ft_strjoin("/", cmd);
 	result = ft_strjoin(path, cmd);
 	free(cmd);

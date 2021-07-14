@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 20:05:08 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/13 18:34:28 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/13 20:45:57 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	execute_cmd(t_pipe *pipes, /*char **env,*/ char *cmd, int pipe_num, t_all *
 	int		i;
 
 	i = 0;
-	printf("cmd={%s}\n", cmd);
 	split_cmd = ft_split(cmd, ' ');
 	while (pipes->path[i])
 	{
@@ -70,13 +69,12 @@ void	execute_cmd(t_pipe *pipes, /*char **env,*/ char *cmd, int pipe_num, t_all *
 	pid = fork();
 	if (pid == 0)
 	{
-		printf("fdi=%d\n", all->fd_iter);
 		dup_fd(all);
 		// execute_dup(pipes, pipe_num);
-		if (e == -1)
-			printf("ERROR on execve\n");
 		close_fd(all);
 		e = execve(pipes->pt, split_cmd, NULL);
+		if (e == -1)
+			printf("ERROR on execve\n");
 		exit (0);
 	}
 	close_fd(all);

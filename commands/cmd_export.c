@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 17:40:55 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/14 11:20:07 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,6 @@ void	cmd_export(t_env *envi, char **argv, int argc, t_all *all)
 	k = 1;
 	head = envi;
 	len_value = 0;
-	// z = 0;
-	// while (z < all->parse->count_r)
-	// {
-	// 	all->fd_iter++;
-	// 	z++;
-	// }
-	// // all->fd_iter++;
-	// dup_fd(all);
 	if (argc >= 2 && all->parse->count_r == 0)
 	{
 		while (k < argc)

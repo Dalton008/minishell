@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 12:10:33 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 19:57:33 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/14 11:20:57 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,19 +181,3 @@ void	work_with_files(t_parse *parse)
 		parse = parse->next;
 	}
 }
-
-// void	vvv(t_all *all)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (all->parse)
-// 	{
-// 		i = 0;
-// 		while (all->parse->split[i])
-// 		{
-// 			if ()
-// 		}
-// 		all->parse = all->parse->next;
-// 	}
-// }

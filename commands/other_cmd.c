@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/13 14:10:29 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/14 12:46:09 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 		if (op != -1)
 			break ;
 		i++;
+		close(op);
 	}
 	z = 0;
 	while (z < all->parse->count_r)
