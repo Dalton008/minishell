@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 12:10:33 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/14 11:20:57 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/14 14:38:40 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,17 @@ void	print_struct(t_all *all)
 		printf("<<=%d\n", all->parse->redir4);
 		printf("line={%s}\n", all->parse->line);
 		printf("cmd={%s}\n", all->parse->cmd);
+		printf("SPLIT 1\n");
 		while (all->parse->split[n])
 		{
 			printf("-%s-\n", all->parse->split[n]);
+			n++;
+		}
+		printf("SPLIT 2\n");
+		n = 0;
+		while (all->parse->split2[n])
+		{
+			printf("-%s-\n", all->parse->split2[n]);
 			n++;
 		}
 		n = 0;

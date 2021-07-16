@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/13 14:07:51 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/16 18:15:38 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <dirent.h>
 # include <string.h>
 # include <signal.h>
+# include <errno.h>
 
 typedef struct s_env
 {
@@ -33,6 +34,14 @@ typedef struct s_env
 
 typedef struct s_parse
 {
+	int				i_1;
+	int				i_2;
+	char			*line1;
+	char			*line2;
+	char			**split2;
+	int				flag; // чтобы работало "'$USER'"
+	int				flag2; // чтобы работало '"$USER"' (работает идеально)
+
 	int				count_r;
 	int				redir1; //>
 	int				redir2; //<
@@ -58,6 +67,9 @@ typedef struct s_pipe
 
 typedef struct s_all
 {
+	pid_t			*pid;
+	int				error;
+	int				absol;
 	int				count_fd;
 	int				count_pipe;
 	int				pfd[100][2];
@@ -99,7 +111,11 @@ char	*ft_strdup(const char *str);
 char	*ft_strchr(const char *str, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**get_path(t_env *envi);
-char	*join_path_to_file(char *path, char *cmd);
+char	*join_path_to_file(char *path, char *cmd, t_all *all);
+char	ft_check(char c, const char *set);
+int		ft_isalnum(int c);
+void	*ft_calloc(size_t number, size_t size);
+void	ft_bzero(void *s, size_t n);
 
 //parse
 void	parse_redir_pipe(t_all *all, char *line);
@@ -108,6 +124,13 @@ t_parse	*new_node(void);
 void	work_with_cmd(t_parse *parse);
 void	work_with_files(t_parse *parse);
 
+// quotes
+void	quot(t_all *all, t_env *envi);
+void	quotes(t_all *all, t_env *envi);
+void	do_two_quotes(t_all **all, t_env *envi);
+void	do_simple_quotes(t_all **all, t_env *envi);
+void	do_dollar(t_all **all, t_env *envi);
+
 //init
 void	init_env(t_env	**envi, char **env);
 void	work_with_fd(char *line, t_all *all);
@@ -115,8 +138,7 @@ void	dup_fd(t_all *all);
 void	close_fd(t_all *all);
 
 //pipe
-int		pipex(int count_pipes, char **split, /*char **env,*/ t_all *all, t_env *envi);
-// int		pipex(int count_pipes, char **split, char **env, t_env *envi);
+int		pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi);
 
 //signal
 void	signal_init(void);

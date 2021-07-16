@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_path.c                                         :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lgarg <lgarg@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 14:05:27 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/15 19:23:41 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/13 18:07:23 by lgarg             #+#    #+#             */
+/*   Updated: 2021/07/13 18:07:40 by lgarg            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_path(t_env *envi)
+void	ft_bzero(void *s, size_t n)
 {
-	char	**path;
+	size_t			i;
+	unsigned char	*str;
 
-	while (envi)
+	i = 0;
+	str = (unsigned char *)s;
+	while (i < n)
 	{
-		if ((ft_strncmp(envi->value, "PATH=", 5)) == 0)
-			path = ft_split(envi->value + 5, ':');
-		envi = envi->next;
+		str[i] = '\0';
+		i++;
 	}
-	return (path);
 }

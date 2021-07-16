@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 11:21:49 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/14 11:34:03 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/16 18:35:45 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	work_with_fd(char *line, t_all *all)
 {
 	int		i;
 	int		n;
+	int		z;
 	int		mfd[2];
 	int		fd;
 	t_parse	*head;
@@ -50,24 +51,30 @@ void	work_with_fd(char *line, t_all *all)
 
 	i = 0;
 	n = 0;
+	z = 0;
 	fd = 0;
 	all->f = 0;
 	head = all->parse;
 	while (line[i])
 	{
 		fname = NULL;
-		if (line[i] == '|')
-		{
-			pipe(mfd);
-			all->pfd[n + 1][0] = mfd[0]; //all->pfd[n + 1][0] = mfd[0];
-			all->pfd[n][1] = mfd[1];
-			printf("%d %d\n", all->pfd[n][0], all->pfd[n][1]);
-			n++;
-		}
+		// if (line[i] == '|')
+		// {
+		// 	while (z < 2)
+		// 	{
+		// 		pipe(all->pfd[z]);
+		// 		z++;
+		// 		// pipe(mfd);
+		// 		// all->pfd[n][0] = mfd[0]; //all->pfd[n + 1][0] = mfd[0];
+		// 		// all->pfd[n][1] = mfd[1];
+		// 		// printf("%d %d\n", all->pfd[n][0], all->pfd[n][1]);
+		// 		// n++;
+		// 		// z++;
+		// 	}
+		// }
 		if (line[i] == '>')
 		{
 			fname = get_file_name(all);
-			printf("nf=%s\n", fname);
 			if (line[i + 1] == '>')
 			{
 				fd = open(fname, O_CREAT | O_RDWR | O_APPEND, 0777);
@@ -84,6 +91,11 @@ void	work_with_fd(char *line, t_all *all)
 		}
 		if (line[i] == '<')
 		{
+			if (line[i + 1] == '<')
+			{
+				i = i + 2;
+				continue ;
+			}
 			fname = get_file_name(all);
 			fd = open(fname, O_CREAT | O_RDWR, 0777);
 			all->pfd[n][0] = fd;

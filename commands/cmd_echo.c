@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 17:11:23 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 18:02:24 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/16 18:24:28 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 		all->fd_iter++;
 		z++;
 	}
-	// all->fd_iter++;
 	dup_fd(all);
 	if (argc == 1)
 		printf("\n");
@@ -47,33 +46,9 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 			while (argv[i] && !ft_strchr("<>", argv[i][0]))
 			{
 				envi = head;
-				if (argv[i][0] == '$')
-				{
-					if (!argv[i][1])
-					{
-						printf("$");
-					}
-					else
-					{
-						while (envi)
-						{
-							key_len = ft_strlen(argv[i] + 1);
-							if (ft_strncmp((argv[i] + 1), envi->value, key_len) == 0)
-							{
-								printf("%s", envi->value + key_len + 1);
-								if (argv[i + 1] != 0)
-									printf(" ");
-							}
-							envi = envi->next;
-						}
-					}
-				}
-				else
-				{
 					printf("%s", argv[i]);
 					if (argv[i + 1] != 0)
 						printf(" ");
-				}
 				i++;
 			}
 		}
@@ -83,33 +58,7 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 			while (argv[i] && !ft_strchr("<>", argv[i][0]))
 			{
 				envi = head;
-				if (argv[i][0] == '$')
-				{
-					if (!argv[i][1])
-					{
-						printf("$\n");
-					}
-					else
-					{
-						cmd_not_found = 1;
-						while (envi)
-						{
-							key_len = ft_strlen(argv[i] + 1);
-							if (ft_strncmp((argv[i] + 1), envi->value, key_len) == 0)
-							{
-								cmd_not_found = 0;
-								printf("%s\n", envi->value + key_len + 1);
-							}
-							envi = envi->next;
-						}
-						if (cmd_not_found)
-							printf("\n");
-					}
-				}
-				else
-				{
 					printf("%s\n", argv[i]);
-				}
 				i++;
 			}
 		}

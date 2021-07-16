@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_path.c                                         :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lgarg <lgarg@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 14:05:27 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/15 19:23:41 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/13 18:08:09 by lgarg             #+#    #+#             */
+/*   Updated: 2021/07/13 18:08:11 by lgarg            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_path(t_env *envi)
+void	*ft_calloc(size_t number, size_t size)
 {
-	char	**path;
+	unsigned char	*str;
 
-	while (envi)
-	{
-		if ((ft_strncmp(envi->value, "PATH=", 5)) == 0)
-			path = ft_split(envi->value + 5, ':');
-		envi = envi->next;
-	}
-	return (path);
+	str = (unsigned char *)malloc(number * size);
+	if (str == NULL)
+		return (NULL);
+	if (str != NULL && (number * size) != 0)
+		ft_bzero(str, number * size);
+	return (str);
 }

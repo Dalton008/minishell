@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_path.c                                         :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lgarg <lgarg@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 14:05:27 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/15 19:23:41 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/13 18:08:53 by lgarg             #+#    #+#             */
+/*   Updated: 2021/07/13 18:08:55 by lgarg            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_path(t_env *envi)
+int	ft_isalnum(int c)
 {
-	char	**path;
-
-	while (envi)
-	{
-		if ((ft_strncmp(envi->value, "PATH=", 5)) == 0)
-			path = ft_split(envi->value + 5, ':');
-		envi = envi->next;
-	}
-	return (path);
+	if ((c >= 65 && c <= 90)
+		|| (c >= 97 && c <= 122)
+		|| (c >= 48 && c <= 57))
+		return (1);
+	else
+		return (0);
 }

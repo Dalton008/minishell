@@ -1,37 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_unset.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/28 14:37:25 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/15 19:17:55 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/13 18:10:06 by lgarg             #+#    #+#             */
+/*   Updated: 2021/07/16 18:15:07 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	cmd_unset(t_env *envi, char *key)
+// int	if_key_ok(char *str)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] != '_' || !ft_isalnum(str[i]))
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (1);
+// }
+
+int	ft_splitlen(char **str)
 {
-	t_env	*temp;
-	t_env	*pred;
-	int		i;
+	int	i;
 
 	i = 0;
-	while (envi)
+	while (str[i])
+		i++;
+	return (i);
+}
+
+char	ft_check(char c, const char *set)
+{
+	int	i;
+
+	i = 0;
+	while (set[i])
 	{
-		i = 0;
-		while (envi->value[i] != '=')
-			i++;
-		if (ft_strncmp(envi->value, key, i) == 0)
-		{
-			temp = envi;
-			envi = envi->next;
-			pred->next = envi;
-			break ;
-		}
-		pred = envi;
-		envi = envi->next;
+		if (set[i] == c)
+			return (1);
+		i++;
 	}
+	return (0);
 }
