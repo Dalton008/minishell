@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:44:47 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/16 19:22:29 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/18 15:57:23 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,16 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	g_exit_status = 0;
 	all = malloc(sizeof(t_all));
 	par = new_node();
 	all->parse = par;
 	head = all->parse;
-	signal_init();
 	init_env(&envi, env);
-	all->error = 0;
+	all->parse->flag = 0;
 	while (42)
 	{
+		signal_init();
 		all->count_fd = 0;
 		all->count_pipe = 0;
 		all->fd_iter = 0;
@@ -42,10 +43,14 @@ int	main(int argc, char **argv, char **env)
 		all->tm_fd1 = 1;
 		all->parse->count_r = 0;
 		all->absol = 0;
-		
 		line = readline("minishell> ");
 		if (line == NULL)
 			ctrl_d_hook();
+		if (ft_strcmp(line, "	") == 0)
+		{
+			free(line);
+			continue ;
+		}
 		if (line && line[0] == '\0')
 		{
       		free(line);
@@ -73,7 +78,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			if (ft_strcmp(all->parse->split2[0], "pwd") == 0)
 				cmd_pwd(envi, all);
-			else if (ft_strcmp(all->parse->split2[0], "echo") == 0)
+			else if (ft_strncmp(all->parse->split2[0], "echo", 4) == 0)
 				cmd_echo(ft_splitlen(all->parse->split2), all->parse->split2, envi, all);
 			else if (ft_strcmp(all->parse->split2[0], "cd") == 0)
 				cmd_cd(envi, all->parse->split[1]);
@@ -107,16 +112,22 @@ int	main(int argc, char **argv, char **env)
 			}
 			else if (ft_strcmp(all->parse->split[0], "$?") == 0)
 			{
-				printf("%d\n", all->error);
+				printf("minishell: %d: command not found\n", g_exit_status);
+				all->parse->flag = 1;
+				g_exit_status = 127;
 			}
 			else
 			{
+				// fd_copy[0] = dup(0);
+				fd_copy[1] = dup(1);
 				other_cmd(all->parse->split, envi, all);
+				// dup2(fd_copy[0], 0);
+				dup2(fd_copy[1], 1);
 			}
 		}
 		all->parse = par;
 		free(line);
 		line = NULL;
 	}
+	return (g_exit_status);
 }
-	

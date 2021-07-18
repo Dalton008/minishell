@@ -108,8 +108,21 @@ int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
 			}
 			else
 			{
-				close(all->pfd[all->fd_iter - 1][1]);
-				dup2(all->pfd[all->fd_iter - 1][0], 0);
+				// if (all->parse->redir1 > 0)
+				// {
+				// 	int y = 1;
+				// 	while (y < all->parse->count_r)
+				// 	{
+				// 		all->fd_iter++;
+				// 		y++;
+				// 	}
+				// 	dup_fd(all);
+				// }
+				// else
+				// {
+					close(all->pfd[all->fd_iter - 1][1]);
+					dup2(all->pfd[all->fd_iter - 1][0], 0);
+				// }
 			}
 			if (check_cmd(all, envi))
 				exit(0);

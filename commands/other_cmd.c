@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/16 19:24:00 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/18 15:03:14 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 {
 	char	**paths;
 	char	*path;
+	int		status;
 	int		i;
 	int		op;
 	pid_t	pid;
@@ -27,13 +28,16 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 
 	i = 0;
 	n = 0;
+	status = 0;
 	len = 0;
 	len_new_absolut = 0;
 	tmp = malloc(ft_splitlen(cmd) * sizeof(char *) + 1);
 	tmp[ft_splitlen(cmd)] = NULL;
 	while (cmd[i])
 	{
-		if (!ft_strchr("<>", cmd[i][0]))
+		if (ft_strchr("<>", cmd[i][0]))
+			break ;
+		else /*(!ft_strchr("<>", cmd[i][0]))*/
 		{
 			if (ft_strchr(cmd[i], '/'))
 			{
@@ -73,29 +77,27 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 		i++;
 		close(op);
 	}
-	z = 0;
+	z = 1;
 	while (z < all->parse->count_r)
 	{
 		all->fd_iter++;
 		z++;
 	}
-	all->fd_iter--;
+	signal_init_for_child();
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
 		dup_fd(all);
 		if (op == -1 && !all->absol)
 		{
-			// all->error = 127;
+			g_exit_status = 127;
 			printf("minishell: %s: command not found\n", all->parse->split2[0]);
-			// strerror(127);
-			exit(127);
+			exit(g_exit_status);
 		}
-			// perror("Invalid command!\n");
-		close_fd(all);
 		execve(path, tmp, NULL);
 	}
-	wait(&all->error);
-	// waitpid(0, 0, 0);
+	else if (all->parse->count_r > 0)
+		close(all->pfd[0][1]);
+	waitpid(pid, &status, WUNTRACED | WCONTINUED);
+	g_exit_status = WEXITSTATUS(status);
 }

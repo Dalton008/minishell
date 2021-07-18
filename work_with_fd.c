@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 11:21:49 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/16 18:35:45 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/18 15:03:06 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,13 @@ void	work_with_fd(char *line, t_all *all)
 		// {
 		// 	while (z < 2)
 		// 	{
-		// 		pipe(all->pfd[z]);
-		// 		z++;
-		// 		// pipe(mfd);
-		// 		// all->pfd[n][0] = mfd[0]; //all->pfd[n + 1][0] = mfd[0];
-		// 		// all->pfd[n][1] = mfd[1];
+		// 		// pipe(all->pfd[z]);
+		// 		pipe(mfd);
+		// 		all->pfd[n][0] = mfd[0]; //all->pfd[n + 1][0] = mfd[0];
+		// 		all->pfd[n][1] = mfd[1];
 		// 		// printf("%d %d\n", all->pfd[n][0], all->pfd[n][1]);
-		// 		// n++;
-		// 		// z++;
+		// 		n++;
+		// 		z++;
 		// 	}
 		// }
 		if (line[i] == '>')
@@ -109,9 +108,9 @@ void	dup_fd(t_all *all)
 {
 	all->tm_fd1 = dup(1);
 	all->tm_fd0 = dup(0);
-	// printf("<%d %d>\n", all->pfd[all->fd_iter][0], all->pfd[all->fd_iter][1]);
-	dup2(all->pfd[all->fd_iter][1], 1);
+	printf("<%d %d>\n", all->pfd[all->fd_iter][0], all->pfd[all->fd_iter][1]);
 	dup2(all->pfd[all->fd_iter][0], 0);
+	dup2(all->pfd[all->fd_iter][1], 1);
 }
 
 void	close_fd(t_all *all)

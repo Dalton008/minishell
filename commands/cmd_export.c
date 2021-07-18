@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/14 11:20:07 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/17 19:19:34 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	sort_envi(t_env *envi, t_all *all)
 		len_envi--;
 	}
 	i = 0;
-	z = 0;
+	z = 1;
 	while (z < all->parse->count_r)
 	{
 		all->fd_iter++;
@@ -96,6 +96,7 @@ void	sort_envi(t_env *envi, t_all *all)
 		printf("declare -x %s\n", mas[i]);
 		i++;
 	}
+	g_exit_status = 0;
 	close_fd(all);
 }
 
@@ -182,6 +183,7 @@ void	cmd_export(t_env *envi, char **argv, int argc, t_all *all)
 			}
 			k++;
 		}
+		g_exit_status = 0;
 	}
 	else if (argc == 1 || all->parse->count_r != 0)
 		sort_envi(envi, all);

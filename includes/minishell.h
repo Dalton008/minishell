@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/16 18:15:38 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/18 15:47:41 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <signal.h>
 # include <errno.h>
 
+int	g_exit_status;
+
 typedef struct s_env
 {
 	char			*value;
@@ -39,9 +41,9 @@ typedef struct s_parse
 	char			*line1;
 	char			*line2;
 	char			**split2;
-	int				flag; // чтобы работало "'$USER'"
-	int				flag2; // чтобы работало '"$USER"' (работает идеально)
+	int				flag;
 
+	int				redirfd[100][2];
 	int				count_r;
 	int				redir1; //>
 	int				redir2; //<
@@ -142,6 +144,7 @@ int		pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi);
 
 //signal
 void	signal_init(void);
+void	signal_init_for_child(void);
 void	ctrl_d_hook(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 12:10:33 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/14 14:38:40 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/18 20:55:52 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	parse_redir_pipe(t_all *all, char *line)
 	head = all->parse;
 	while (line[i])
 	{
-		if (line[i] == '|')
+		if (line[i] == '|' && line[i - 1] != '"')
 		{
 			all->parse->line = ft_substr(line, n, i);
 			n = i + 1;
@@ -132,7 +132,12 @@ void	parse_redir_pipe(t_all *all, char *line)
 		if (line[i] == '\0')
 		{
 			all->parse->line = ft_substr(line, n, i);
-			all->parse->split = ft_split(all->parse->line, ' ');
+			if (!ft_strchr(line, '"'))
+				all->parse->split = ft_split(all->parse->line, ' ');
+			else
+			{
+				all->parse->split = ft_split(all->parse->line, '"');
+			}
 		}
 	}
 	all->parse = head;

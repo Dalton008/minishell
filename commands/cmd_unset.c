@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 14:37:25 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/15 19:17:55 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/17 19:19:54 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ void	cmd_unset(t_env *envi, char *key)
 		pred = envi;
 		envi = envi->next;
 	}
+	g_exit_status = 0;
 }

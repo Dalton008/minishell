@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 18:23:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/15 12:41:07 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/17 19:17:53 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	set_pwd(t_env **envi, char *oldpwd, char *pwd, t_env *head)
 		}
 		(*envi) = (*envi)->next;
 	}
+	g_exit_status = 0;
 }
 
 void	cmd_cd(t_env *envi, char *str)
@@ -55,8 +56,10 @@ void	cmd_cd(t_env *envi, char *str)
 	if (dir == -1)
 	{
 		printf("No such file or directory\n");
+		g_exit_status = 1;
 		return ;
 	}
 	else
 		set_pwd(&envi, oldpwd, pwd, head);
+	g_exit_status = 0;
 }

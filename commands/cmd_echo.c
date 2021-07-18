@@ -6,16 +6,11 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 17:11:23 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/16 18:24:28 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/18 16:09:12 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// int	check_redir(char *str)
-// {
-// 	if (ft_strch)
-// }
 
 char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 {
@@ -29,7 +24,7 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 	i = 0;
 	head = envi;
 	key_len = 0;
-	z = 0;
+	z = 1;
 	while (z < all->parse->count_r)
 	{
 		all->fd_iter++;
@@ -46,9 +41,9 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 			while (argv[i] && !ft_strchr("<>", argv[i][0]))
 			{
 				envi = head;
-					printf("%s", argv[i]);
-					if (argv[i + 1] != 0)
-						printf(" ");
+				ft_putstr_fd(argv[i], all->pfd[all->fd_iter][1]);
+				if (argv[i + 1] != 0 && !ft_strchr("<>", argv[i + 1][0]))
+					ft_putstr_fd(" ", all->pfd[all->fd_iter][1]);
 				i++;
 			}
 		}
@@ -58,11 +53,13 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 			while (argv[i] && !ft_strchr("<>", argv[i][0]))
 			{
 				envi = head;
-					printf("%s\n", argv[i]);
+				ft_putstr_fd(argv[i], all->pfd[all->fd_iter][1]);
+				ft_putstr_fd("\n", all->pfd[all->fd_iter][1]);
 				i++;
 			}
 		}
 	}
 	close_fd(all);
+	g_exit_status = 0;
 	return (0);
 }

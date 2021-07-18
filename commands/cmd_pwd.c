@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:52:31 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/16 17:04:44 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/17 19:19:42 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	cmd_pwd(t_env *envi, t_all *all)
 	char	*pwd;
 	int		z;
 
-	z = 0;
+	z = 1;
 	while (z < all->parse->count_r)
 	{
 		all->fd_iter++;
@@ -31,4 +31,5 @@ void	cmd_pwd(t_env *envi, t_all *all)
 	free(pwd);
 	free(buf);
 	close_fd(all);
+	g_exit_status = 0;
 }
