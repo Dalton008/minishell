@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/18 15:03:14 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/19 17:52:07 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 		{
 			if (ft_strchr(cmd[i], '/'))
 			{
+				// printf("{%s}\n", cmd[i]);
 				len = ft_strlen(cmd[i]);
 				while (cmd[i][len] != '/')
 				{
@@ -67,15 +68,23 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 	}
 	tmp[n] = NULL;
 	i = 0;
-	paths = get_path(envi);
-	while (paths[i])
+	// while (tmp[i])
+	// 	printf("%s\n", tmp[i++]);
+	i = 0;
+	all->paths = get_path(envi);
+	if (all->paths == NULL)
 	{
-		path = join_path_to_file(paths[i], cmd[0], all);
+		printf("minishell: %s: No such file or directory\n", all->parse->split2[0]);
+		g_exit_status = 127;
+		return ;
+	}
+	while (all->paths[i])
+	{
+		path = join_path_to_file(all->paths[i], cmd[0], all);
 		op = open(path, O_RDONLY);
 		if (op != -1)
 			break ;
 		i++;
-		close(op);
 	}
 	z = 1;
 	while (z < all->parse->count_r)
@@ -84,6 +93,13 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 		z++;
 	}
 	signal_init_for_child();
+	if (op == -1 && !all->absol)
+	{
+		g_exit_status = 127;
+		printf("minishell: %s: command not found\n", all->parse->split2[0]);
+		// exit(g_exit_status);
+		return ;
+	}
 	pid = fork();
 	if (pid == 0)
 	{

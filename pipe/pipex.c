@@ -76,22 +76,34 @@ int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
 
 	i = 0;
 	create_pipes(all, all->count_pipe);
-	pipes.path = get_path(envi);
+	all->paths = get_path(envi);
 	fdtmp = dup(0);
 	pid = malloc(sizeof(pid_t) * all->count_pipe);
 	while (all->parse)
 	{
 		n = 0;
-		pid[i] = fork();
 		split_cmd = ft_split(all->parse->cmd, ' ');
-		while (pipes.path[n])
+		if (all->paths == NULL)
 		{
-			pipes.pt = join_path_to_file(pipes.path[n], split_cmd[0], all);
+			printf("minishell: %s: No such file or directory\n", all->parse->split2[0]);
+			g_exit_status = 127;
+			return (1);
+		}
+		while (all->paths[n])
+		{
+			pipes.pt = join_path_to_file(all->paths[n], split_cmd[0], all);
 			pipes.op = open(pipes.pt, O_RDONLY);
 			if (pipes.op != -1)
 				break ;
 			n++;
 		}
+		if (pipes.op == -1)
+		{
+			g_exit_status = 127;
+			printf("minishell: %s: command not found\n", split_cmd[0]);
+			break ;
+		}
+		pid[i] = fork();
 		if (pid[i] == 0)
 		{
 			if (all->fd_iter == 0)
@@ -108,21 +120,8 @@ int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
 			}
 			else
 			{
-				// if (all->parse->redir1 > 0)
-				// {
-				// 	int y = 1;
-				// 	while (y < all->parse->count_r)
-				// 	{
-				// 		all->fd_iter++;
-				// 		y++;
-				// 	}
-				// 	dup_fd(all);
-				// }
-				// else
-				// {
-					close(all->pfd[all->fd_iter - 1][1]);
-					dup2(all->pfd[all->fd_iter - 1][0], 0);
-				// }
+				close(all->pfd[all->fd_iter - 1][1]);
+				dup2(all->pfd[all->fd_iter - 1][0], 0);
 			}
 			if (check_cmd(all, envi))
 				exit(0);

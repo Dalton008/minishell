@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 11:28:13 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/14 11:22:36 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/19 17:54:50 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ void	init_env(t_env	**envi, char **env)
 	{
 		(*envi)->value = ft_strdup(env[i]);
 		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
+		{
 			(*envi)->value[6] = (*envi)->value[6] + 1;
+		}
 		(*envi)->next = NULL;
 		i++;
 		if (env[i])

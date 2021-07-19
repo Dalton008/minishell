@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/18 15:47:41 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/19 17:40:23 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_parse
 	char			**split2;
 	int				flag;
 
-	int				redirfd[100][2];
 	int				count_r;
 	int				redir1; //>
 	int				redir2; //<
@@ -78,7 +77,9 @@ typedef struct s_all
 	int				fd_iter;
 	int				tm_fd1;
 	int				tm_fd0;
+	char			**paths;
 	struct s_parse	*parse;
+	// int				shlvl;
 	int				f;
 }				t_all;
 

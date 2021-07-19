@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 14:05:27 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/15 19:23:41 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/19 16:29:18 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	**get_path(t_env *envi)
 {
 	char	**path;
 
+	path = NULL;
 	while (envi)
 	{
 		if ((ft_strncmp(envi->value, "PATH=", 5)) == 0)

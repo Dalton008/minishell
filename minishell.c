@@ -6,11 +6,39 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:44:47 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/18 15:57:23 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/19 18:20:04 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+
+int	check_space(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+// int	check_path(t_env *envi)
+// {
+// 	while (envi)
+// 	{
+// 		if ((ft_strncmp(envi->value, "PATH=", 5)) == 0)
+// 		{
+			
+// 			return (1);
+// 		}
+// 		envi = envi->next;
+// 	}
+// 	return (0);
+// }
 
 int	main(int argc, char **argv, char **env)
 {
@@ -32,10 +60,11 @@ int	main(int argc, char **argv, char **env)
 	all->parse = par;
 	head = all->parse;
 	init_env(&envi, env);
-	all->parse->flag = 0;
+	all->paths = get_path(envi);
 	while (42)
 	{
 		signal_init();
+		all->parse->flag = 0;
 		all->count_fd = 0;
 		all->count_pipe = 0;
 		all->fd_iter = 0;
@@ -46,15 +75,10 @@ int	main(int argc, char **argv, char **env)
 		line = readline("minishell> ");
 		if (line == NULL)
 			ctrl_d_hook();
-		if (ft_strcmp(line, "	") == 0)
-		{
-			free(line);
-			continue ;
-		}
-		if (line && line[0] == '\0')
+		if ((line && line[0] == '\0') || ft_strcmp(line, "	") == 0 || check_space(line))
 		{
       		free(line);
-      		continue ;
+			continue ;
     	}
 		split = NULL;
 		add_history(line);
@@ -118,10 +142,10 @@ int	main(int argc, char **argv, char **env)
 			}
 			else
 			{
-				// fd_copy[0] = dup(0);
+				fd_copy[0] = dup(0);
 				fd_copy[1] = dup(1);
-				other_cmd(all->parse->split, envi, all);
-				// dup2(fd_copy[0], 0);
+				other_cmd(all->parse->split2, envi, all);
+				dup2(fd_copy[0], 0);
 				dup2(fd_copy[1], 1);
 			}
 		}
