@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:44:47 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/19 18:20:04 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/21 17:56:05 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,6 @@ int	check_space(char *line)
 	return (1);
 }
 
-// int	check_path(t_env *envi)
-// {
-// 	while (envi)
-// 	{
-// 		if ((ft_strncmp(envi->value, "PATH=", 5)) == 0)
-// 		{
-			
-// 			return (1);
-// 		}
-// 		envi = envi->next;
-// 	}
-// 	return (0);
-// }
-
 int	main(int argc, char **argv, char **env)
 {
 	t_all	*all;
@@ -51,6 +37,7 @@ int	main(int argc, char **argv, char **env)
 	int		len_split;
 	t_parse *head;
 	int fd_copy[2];
+	int x;
 
 	(void)argc;
 	(void)argv;
@@ -68,11 +55,13 @@ int	main(int argc, char **argv, char **env)
 		all->count_fd = 0;
 		all->count_pipe = 0;
 		all->fd_iter = 0;
+		all->fd_iter_redir = 0;
 		all->tm_fd0 = 0;
 		all->tm_fd1 = 1;
+		all->f = 0;
 		all->parse->count_r = 0;
 		all->absol = 0;
-		line = readline("minishell> ");
+		line = readline("\e[38;5;202mminishell🦊 \033[0m");
 		if (line == NULL)
 			ctrl_d_hook();
 		if ((line && line[0] == '\0') || ft_strcmp(line, "	") == 0 || check_space(line))
@@ -91,18 +80,26 @@ int	main(int argc, char **argv, char **env)
 		// print_struct(all);
 		if (all->count_pipe != 0)
 		{
-			len_split = ft_splitlen(all->parse->split);
+			len_split = ft_splitlen(all->parse->split2);
 			fd_copy[0] = dup(0);
 			fd_copy[1] = dup(1);
-			pipex(len_split, all->parse->split, env, all, envi);
+			pipex(len_split, all->parse->split2, env, all, envi);
 			dup2(fd_copy[0], 0);
 			dup2(fd_copy[1], 1);
 		}
 		else
 		{
+			x = 1;
+			while (x < all->parse->count_r)
+			{
+				all->fd_iter_redir++;
+				x++;
+			}
+			if (all->parse->count_r > 0)
+				dup_fd2(all);
 			if (ft_strcmp(all->parse->split2[0], "pwd") == 0)
 				cmd_pwd(envi, all);
-			else if (ft_strncmp(all->parse->split2[0], "echo", 4) == 0)
+			else if (ft_strcmp(all->parse->split2[0], "echo") == 0)
 				cmd_echo(ft_splitlen(all->parse->split2), all->parse->split2, envi, all);
 			else if (ft_strcmp(all->parse->split2[0], "cd") == 0)
 				cmd_cd(envi, all->parse->split[1]);
@@ -118,7 +115,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (!all->parse->split[1])
 				{
-					printf("minishell: syntax error near unexpected token `newline'\n");
+					printf("\e[38;5;202mminishell:" "\x1b[0msyntax error near unexpected token `newline'\n");
 					all->parse = par;
 					free(line);
 					line = NULL;
@@ -136,7 +133,7 @@ int	main(int argc, char **argv, char **env)
 			}
 			else if (ft_strcmp(all->parse->split[0], "$?") == 0)
 			{
-				printf("minishell: %d: command not found\n", g_exit_status);
+				printf("\e[38;5;202mminishell: " "\x1b[0m%d: command not found\n", g_exit_status);
 				all->parse->flag = 1;
 				g_exit_status = 127;
 			}
@@ -148,6 +145,8 @@ int	main(int argc, char **argv, char **env)
 				dup2(fd_copy[0], 0);
 				dup2(fd_copy[1], 1);
 			}
+			if (all->parse->count_r > 0)
+				close_fd2(all);
 		}
 		all->parse = par;
 		free(line);

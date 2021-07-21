@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/19 14:50:39 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/20 16:55:39 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	sort_envi(t_env *envi, t_all *all)
 	int		i;
 	int		n;
 	int		k;
-	int		z;
+	// int		z;
 	char	**mas;
 	char	*tmp;
 	t_env	*head;
@@ -84,20 +84,20 @@ void	sort_envi(t_env *envi, t_all *all)
 		len_envi--;
 	}
 	i = 0;
-	z = 1;
-	while (z < all->parse->count_r)
-	{
-		all->fd_iter++;
-		z++;
-	}
-	dup_fd(all);
+	// z = 1;
+	// while (z < all->parse->count_r)
+	// {
+	// 	all->fd_iter_redir++;
+	// 	z++;
+	// }
+	// dup_fd(all);
 	while (mas[i])
 	{
 		printf("declare -x %s\n", mas[i]);
 		i++;
 	}
 	g_exit_status = 0;
-	close_fd(all);
+	// close_fd(all);
 }
 
 int	check_key(t_env *envi, char	*str)

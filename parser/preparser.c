@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 12:10:33 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/19 18:08:08 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/21 17:19:36 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,24 +77,130 @@ void	print_struct(t_all *all)
 	}
 }
 
+void	work_with_quotes(char *line, t_parse *parse)
+{
+	int q1 = 1;
+	int	len;
+	int i_sp;
+	int x;
+	int n;
+	int i;
+	int q;
+
+	i = 0;
+	q = 1;
+	i_sp = 0;
+	parse->split = malloc(sizeof(char *) * 10);
+	while (line[i] && line[i] != '|')
+	{
+		len = 0;
+		if (line[i] == ' ')
+			i++;
+		if (line[i] == '"' || line[i] == '\'')
+		{
+			q++;
+		}
+		if (q % 2 != 0)
+		{
+			x = i;
+			while (line[x] && line[x] != ' ')
+			{
+				len++;
+				x++;
+			}
+			parse->split[i_sp] = (char *)malloc(len + 1);
+			parse->split[i_sp][len] = 0;
+			x = i;
+			n = 0;
+			while (n < len)
+			{
+				parse->split[i_sp][n] = line[x];
+				n++;
+				x++;
+			}
+			i = x;
+		}
+		else
+		{
+			x = i;
+			x++;
+			len++;
+			while (line[x] && (line[x] != '"' || line[i] == '\''))
+			{
+				len++;
+				x++;
+			}
+			if (line[x + 1] && line[x + 1] != ' ')
+			{
+				x++;
+				len++;
+				while (line[x] && line[x] != ' ')
+				{
+					len++;
+					x++;
+				}
+				parse->split[i_sp] = (char *)malloc(len + 1);
+				parse->split[i_sp][len] = 0;
+				x = i;
+				n = 0;
+				while (n < len)
+				{
+					parse->split[i_sp][n] = line[x];
+					n++;
+					x++;
+				}
+				i = x + 1;
+			}
+			else
+			{
+				len++;
+				parse->split[i_sp] = (char *)malloc(len + 1);
+				parse->split[i_sp][len] = 0;
+				x = i;
+				n = 0;
+				while (n < len)
+				{
+					parse->split[i_sp][n] = line[x];
+					n++;
+					x++;
+				}
+				i = x + 1;
+			}
+			q++;
+		}
+		// printf("<%s>\n", parse->split[i_sp]);
+		i_sp++;
+	}
+	parse->split[i_sp] = NULL;
+}
+
 void	parse_redir_pipe(t_all *all, char *line)
 {
 	int	i;
 	int	n;
+	int	q;
 	t_parse	*head;
 
 	i = 0;
 	n = 0;
+	q = 1;
 	head = all->parse;
 	while (line[i])
 	{
-		if (line[0] == '.')
-			line++;
-		if (line[i] == '|' && line[i - 1] != '"')
+		if (line[i] == '"' || line[i] == '\'')
+			q++;
+		// if (line[0] == '.')
+		// 	line++;
+		if (line[i] == '|' && line[i - 1] != '"' && q % 2 != 0)
 		{
 			all->parse->line = ft_substr(line, n, i);
 			n = i + 1;
-			all->parse->split = ft_split(all->parse->line, ' ');
+			if (!ft_strchr(line, '"'))
+				all->parse->split = ft_split(all->parse->line, ' ');
+			else
+			{
+				work_with_quotes(all->parse->line, all->parse);
+			}
 			all->parse->next = new_node();
 			all->parse = all->parse->next;
 			all->count_fd++;
@@ -134,12 +240,13 @@ void	parse_redir_pipe(t_all *all, char *line)
 		if (line[i] == '\0')
 		{
 			all->parse->line = ft_substr(line, n, i);
-			// if (!ft_strchr(line, '"'))
-			all->parse->split = ft_split(all->parse->line, ' ');
-			// else
-			// {
-			// 	all->parse->split = ft_split(all->parse->line, '"');
-			// }
+			// printf("%s\n", all->parse->line);
+			if (!ft_strchr(line, '"'))
+				all->parse->split = ft_split(all->parse->line, ' ');
+			else
+			{
+				work_with_quotes(all->parse->line, all->parse);
+			}
 		}
 	}
 	all->parse = head;

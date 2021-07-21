@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 12:13:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/16 19:11:35 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/21 17:53:29 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,10 @@ void	quotes(t_all *all, t_env *envi)
 	int	i;
 
 	i = 0;
+	all->parse->split[0] = ft_strtrim(all->parse->split[0], " ");
 	while (all->parse->split[i])
 	{
+		// if (all->parse->split[0])
 		all->parse->i_1 = 0;
 		all->parse->i_2 = 0;
 		all->parse->line1 = all->parse->split[i];
@@ -91,7 +93,7 @@ void	quotes(t_all *all, t_env *envi)
 			}
 			else
 			{
-				printf("minishell> %s: not enought quotes\n", all->parse->line1);
+				printf("\e[38;5;202mminishell: " "\033[0m%s: not enought quotes\n", all->parse->line1);
 				break ;
 			}
 		}

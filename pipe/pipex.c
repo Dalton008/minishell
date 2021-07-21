@@ -12,19 +12,6 @@
 
 #include "../includes/minishell.h"
 
-void	create_pipes(t_all *all, int count)
-{
-	int	i;
-	int	fdd[2];
-
-	i = 0;
-	while (i < count)
-	{
-		pipe(all->pfd[i]);
-		i++;
-	}
-}
-
 int	check_cmd(t_all *all, t_env *envi)
 {
 	if (ft_strcmp(all->parse->split2[0], "pwd") == 0)
@@ -73,25 +60,33 @@ int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
 	int		n;
 	char	**split_cmd;
 	int		fdtmp;
+	int m;
 
 	i = 0;
-	create_pipes(all, all->count_pipe);
 	all->paths = get_path(envi);
 	fdtmp = dup(0);
 	pid = malloc(sizeof(pid_t) * all->count_pipe);
 	while (all->parse)
 	{
+		m = 1;
+		while (m < all->parse->count_r)
+		{
+			all->fd_iter_redir++;
+			m++;
+		}
+		if (all->parse->count_r > 0)
+			dup_fd2(all);
 		n = 0;
 		split_cmd = ft_split(all->parse->cmd, ' ');
 		if (all->paths == NULL)
 		{
-			printf("minishell: %s: No such file or directory\n", all->parse->split2[0]);
+			printf("\e[38;5;202mminishell: " "\033[0m%s: No such file or directory\n", all->parse->split2[0]);
 			g_exit_status = 127;
 			return (1);
 		}
 		while (all->paths[n])
 		{
-			pipes.pt = join_path_to_file(all->paths[n], split_cmd[0], all);
+			pipes.pt = join_path_to_file(all->paths[n], all->parse->split2[0], all);
 			pipes.op = open(pipes.pt, O_RDONLY);
 			if (pipes.op != -1)
 				break ;
@@ -100,7 +95,7 @@ int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
 		if (pipes.op == -1)
 		{
 			g_exit_status = 127;
-			printf("minishell: %s: command not found\n", split_cmd[0]);
+			printf("\e[38;5;202mminishell: " "\033[0m%s: command not found\n", split_cmd[0]);
 			break ;
 		}
 		pid[i] = fork();
@@ -125,10 +120,15 @@ int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
 			}
 			if (check_cmd(all, envi))
 				exit(0);
-			execve(pipes.pt, split_cmd, env);
+			execve(pipes.pt, all->parse->split2, env);
 		}
 		else
 			close(all->pfd[all->fd_iter][1]);
+		if (all->parse->count_r > 0)
+		{
+			close(all->redirfd[0][0]);
+			close(all->redirfd[0][1]);
+		}
 		i++;
 		all->fd_iter++;
 		all->parse = all->parse->next;

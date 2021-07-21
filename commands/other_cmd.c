@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/19 17:52:07 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/21 18:05:39 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,10 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 	{
 		if (ft_strchr("<>", cmd[i][0]))
 			break ;
-		else /*(!ft_strchr("<>", cmd[i][0]))*/
+		else
 		{
 			if (ft_strchr(cmd[i], '/'))
 			{
-				// printf("{%s}\n", cmd[i]);
 				len = ft_strlen(cmd[i]);
 				while (cmd[i][len] != '/')
 				{
@@ -68,13 +67,10 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 	}
 	tmp[n] = NULL;
 	i = 0;
-	// while (tmp[i])
-	// 	printf("%s\n", tmp[i++]);
-	i = 0;
 	all->paths = get_path(envi);
 	if (all->paths == NULL)
 	{
-		printf("minishell: %s: No such file or directory\n", all->parse->split2[0]);
+		printf("\e[38;5;202mminishell: " "\033[0m%s: No such file or directory\n", all->parse->split2[0]);
 		g_exit_status = 127;
 		return ;
 	}
@@ -86,34 +82,24 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 			break ;
 		i++;
 	}
-	z = 1;
-	while (z < all->parse->count_r)
-	{
-		all->fd_iter++;
-		z++;
-	}
 	signal_init_for_child();
 	if (op == -1 && !all->absol)
 	{
 		g_exit_status = 127;
-		printf("minishell: %s: command not found\n", all->parse->split2[0]);
-		// exit(g_exit_status);
+		printf("\e[38;5;202mminishell: " "\033[0m%s: command not found\n", all->parse->split2[0]);
 		return ;
 	}
 	pid = fork();
 	if (pid == 0)
 	{
-		dup_fd(all);
 		if (op == -1 && !all->absol)
 		{
 			g_exit_status = 127;
-			printf("minishell: %s: command not found\n", all->parse->split2[0]);
+			printf("\e[38;5;202mminishell: " "\033[0m%s: command not found\n", all->parse->split2[0]);
 			exit(g_exit_status);
 		}
 		execve(path, tmp, NULL);
 	}
-	else if (all->parse->count_r > 0)
-		close(all->pfd[0][1]);
 	waitpid(pid, &status, WUNTRACED | WCONTINUED);
 	g_exit_status = WEXITSTATUS(status);
 }

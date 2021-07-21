@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 17:11:23 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/19 15:16:00 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/21 17:35:16 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 	int		n;
 	int		key_len;
 	int		cmd_not_found;
-	int		z;
+	// int		z;
 
 	i = 0;
 	head = envi;
 	key_len = 0;
-	z = 1;
-	while (z < all->parse->count_r)
-	{
-		all->fd_iter++;
-		z++;
-	}
-	dup_fd(all);
+	// z = 1;
+	// while (z < all->parse->count_r)
+	// {
+	// 	all->fd_iter_redir++;
+	// 	z++;
+	// }
+	// dup_fd(all);
 	if (argc == 1)
 		printf("\n");
 	else
@@ -41,9 +41,10 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 			while (argv[i] && !ft_strchr("<>", argv[i][0]))
 			{
 				envi = head;
-				ft_putstr_fd(argv[i], all->pfd[all->fd_iter][1]);
-				if (argv[i + 1] != 0 && !ft_strchr("<>", argv[i + 1][0]))
-					ft_putstr_fd(" ", all->pfd[all->fd_iter][1]);
+				if (ft_strcmp(argv[i], "-n") != 0)
+					ft_putstr_fd(argv[i], all->redirfd[all->fd_iter_redir][1]);
+				if (argv[i + 1] != 0 && !ft_strchr("<>", argv[i + 1][0]) && ft_strcmp(argv[i], "-n") != 0)
+					ft_putstr_fd(" ", all->redirfd[all->fd_iter_redir][1]);
 				i++;
 			}
 		}
@@ -53,13 +54,14 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 			while (argv[i] && !ft_strchr("<>", argv[i][0]))
 			{
 				envi = head;
-				ft_putstr_fd(argv[i], all->pfd[all->fd_iter][1]);
-				ft_putstr_fd("\n", all->pfd[all->fd_iter][1]);
+				ft_putstr_fd(argv[i], all->redirfd[all->fd_iter_redir][1]);
+				ft_putstr_fd(" ", all->redirfd[all->fd_iter_redir][1]);
 				i++;
 			}
+			ft_putstr_fd("\n", all->redirfd[all->fd_iter_redir][1]);
 		}
 	}
-	close_fd(all);
+	// close_fd(all);
 	g_exit_status = 0;
 	return (0);
 }

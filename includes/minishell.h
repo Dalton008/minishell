@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/19 17:40:23 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/20 15:21:24 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,13 @@ typedef struct s_all
 	int				count_fd;
 	int				count_pipe;
 	int				pfd[100][2];
+	int				redirfd[100][2];
 	int				fd_iter;
+	int				fd_iter_redir;
 	int				tm_fd1;
 	int				tm_fd0;
 	char			**paths;
 	struct s_parse	*parse;
-	// int				shlvl;
 	int				f;
 }				t_all;
 
@@ -119,6 +120,7 @@ char	ft_check(char c, const char *set);
 int		ft_isalnum(int c);
 void	*ft_calloc(size_t number, size_t size);
 void	ft_bzero(void *s, size_t n);
+char	*ft_strtrim(char const *s1, char const *set);
 
 //parse
 void	parse_redir_pipe(t_all *all, char *line);
@@ -138,7 +140,9 @@ void	do_dollar(t_all **all, t_env *envi);
 void	init_env(t_env	**envi, char **env);
 void	work_with_fd(char *line, t_all *all);
 void	dup_fd(t_all *all);
+void	dup_fd2(t_all *all);
 void	close_fd(t_all *all);
+void	close_fd2(t_all *all);
 
 //pipe
 int		pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi);

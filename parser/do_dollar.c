@@ -12,6 +12,51 @@
 
 #include "../includes/minishell.h"
 
+int static	ft_size(int n)
+{
+	unsigned int		size;
+
+	size = 1;
+	if (n < 0)
+	{
+		n = -n;
+		size++;
+	}
+	while (n / 10 > 0)
+	{
+		n = n / 10;
+		size++;
+	}
+	return (size);
+}
+
+char	*ft_itoa(int n)
+{
+	char			*str;
+	int				size;
+
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	size = ft_size(n);
+	str = (char *)malloc(sizeof(char) * size + 1);
+	if (str == NULL)
+		return (NULL);
+	if (n < 0)
+	{
+		str[0] = '-';
+		n = -n;
+	}
+	str[size--] = '\0';
+	while (n / 10 > 0)
+	{
+		str[size] = (n % 10) + '0';
+		n = n / 10;
+		size--;
+	}
+	str[size] = n + '0';
+	return (str);
+}
+
 char *ft_strcpy(char *dest, char *src)
 {
 	int i;
@@ -53,7 +98,8 @@ void	do_dollar(t_all **all, t_env *envi)
 	if ((*all)->parse->line1[(*all)->parse->i_1] == '?' && (!(*all)->parse->line1[(*all)->parse->i_1 + 1] \
 					|| (*all)->parse->line1[(*all)->parse->i_1 + 1] == '\"') && (*all)->parse->flag != 1)
 	{
-		printf("%d\n", g_exit_status);
+		(*all)->parse->line2 = ft_itoa(g_exit_status);
+		(*all)->parse->i_2 += ft_size(g_exit_status);
 		(*all)->parse->i_1++;
 	}
 	else if (!(*all)->parse->line1[(*all)->parse->i_1])
