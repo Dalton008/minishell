@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 18:23:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/19 14:50:12 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 16:57:50 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	cmd_cd(t_env *envi, char *str)
 	t_env	*head;
 	int		dir;
 	char	*buf;
-	char 	*pwd;
-	
+	char	*pwd;
+
 	buf = NULL;
 	head = envi;
 	oldpwd = getcwd(buf, 0);
 	dir = chdir(str);
-	pwd = getcwd(buf, 0); //выделяет память!
+	pwd = getcwd(buf, 0);
 	if (dir == -1)
 	{
 		printf("No such file or directory\n");
@@ -63,3 +63,5 @@ void	cmd_cd(t_env *envi, char *str)
 		set_pwd(&envi, oldpwd, pwd, head);
 	g_exit_status = 0;
 }
+
+//getcwd выделяет память!

@@ -6,18 +6,17 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/20 16:55:39 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 14:54:40 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	sort_envi(t_env *envi, t_all *all)
+void	sort_envi(t_env *envi)
 {
 	int		i;
 	int		n;
 	int		k;
-	// int		z;
 	char	**mas;
 	char	*tmp;
 	t_env	*head;
@@ -84,26 +83,16 @@ void	sort_envi(t_env *envi, t_all *all)
 		len_envi--;
 	}
 	i = 0;
-	// z = 1;
-	// while (z < all->parse->count_r)
-	// {
-	// 	all->fd_iter_redir++;
-	// 	z++;
-	// }
-	// dup_fd(all);
 	while (mas[i])
 	{
 		printf("declare -x %s\n", mas[i]);
 		i++;
 	}
 	g_exit_status = 0;
-	// close_fd(all);
 }
 
 int	check_key(t_env *envi, char	*str)
 {
-	int	len;
-
 	while (envi)
 	{
 		if (ft_strncmp(envi->value, str, ft_strlen(str)) == 0)
@@ -121,7 +110,6 @@ void	cmd_export(t_env *envi, char **argv, int argc, t_all *all)
 	int		n;
 	int		k;
 	t_env	*head;
-	int		z;
 
 	i = 0;
 	n = 0;
@@ -135,6 +123,11 @@ void	cmd_export(t_env *envi, char **argv, int argc, t_all *all)
 			i = 0;
 			n = 0;
 			envi = head;
+			if (check_key(envi, argv[k]))
+			{
+				k++;
+				continue ;
+			}
 			if (ft_strchr(argv[k], '='))
 			{
 				split = ft_split(argv[k], '=');
@@ -186,5 +179,5 @@ void	cmd_export(t_env *envi, char **argv, int argc, t_all *all)
 		g_exit_status = 0;
 	}
 	else if (argc == 1 || all->parse->count_r != 0)
-		sort_envi(envi, all);
+		sort_envi(envi);
 }

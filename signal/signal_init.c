@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 20:31:36 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/18 14:56:22 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 16:21:43 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	my_sigint(int val)
 {
+	(void)val;
 	rl_on_new_line();
 	rl_redisplay();
 	ft_putstr_fd("  \n", 1);
@@ -25,7 +26,7 @@ void	my_sigint(int val)
 void	ctrl_d_hook(void)
 {
 	ft_putstr_fd("\e[1A\e[12C" "exit\n", 1);
-	exit (0);
+	exit (g_exit_status);
 }
 
 void	signal_init(void)
@@ -37,12 +38,21 @@ void	signal_init(void)
 
 static void	my_new(int val)
 {
+	(void)val;
+	g_exit_status = 130;
 	printf("\n");
+}
+
+static void	my_new2(int val)
+{
+	(void)val;
+	g_exit_status = 131;
+	printf("Quit: 3\n");
 }
 
 void	signal_init_for_child(void)
 {
 	signal(SIGINT, my_new);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, my_new2);
 	signal(SIGTSTP, SIG_IGN);
 }

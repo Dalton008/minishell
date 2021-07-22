@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 18:38:36 by lgarg             #+#    #+#             */
-/*   Updated: 2021/07/19 15:31:21 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 13:36:12 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,11 @@ void	do_dollar(t_all **all, t_env *envi)
 		(*all)->parse->i_2 += ft_size(g_exit_status);
 		(*all)->parse->i_1++;
 	}
-	else if (!(*all)->parse->line1[(*all)->parse->i_1])
-		printf("$\n");
+	else if (!(*all)->parse->line1[(*all)->parse->i_1] || (*all)->parse->line1[(*all)->parse->i_1] == '\"')
+	{
+		(*all)->parse->line2[(*all)->parse->i_2] = '$';
+		(*all)->parse->i_2 += 1;
+	}
 	else
 	{
 		get_key(all, key);

@@ -6,13 +6,13 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 12:13:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/21 17:53:29 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 14:34:34 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	do_simple_quotes(t_all **all, t_env *envi)
+void	do_simple_quotes(t_all **all)
 {
 	(*all)->parse->i_1++;
 	while ((*all)->parse->line1[(*all)->parse->i_1] && (*all)->parse->line1[(*all)->parse->i_1] != '\'')
@@ -78,7 +78,7 @@ void	quotes(t_all *all, t_env *envi)
 										|| all->parse->line1[all->parse->i_1] == '$')
 				{
 					if (all->parse->line1[all->parse->i_1] == '\'')
-						do_simple_quotes(&all, envi);
+						do_simple_quotes(&all);
 					else if (all->parse->line1[all->parse->i_1] == '\"')
 						do_two_quotes(&all, envi);
 					else if (all->parse->line1[all->parse->i_1] == '$' && !ft_check(all->parse->line1[all->parse->i_1 + 1], "\'\""))

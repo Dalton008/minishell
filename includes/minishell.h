@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/20 15:21:24 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 17:02:20 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,18 @@ void	dl_redisplay(void);
 void	rl_replace_line(const char *buffer, int val);
 
 // commands
-void	cmd_pwd(t_env *envi, t_all *all);
-char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all);
+void	cmd_pwd(void);
+void	cmd_echo(int argc, char **argv);
 void	cmd_env(t_env *envi, t_all *all);
 void	cmd_export(t_env *envi, char **argv, int argc, t_all *all);
 void	cmd_cd(t_env *envi, char *str);
 void	cmd_unset(t_env *envi, char *key);
 void	other_cmd(char **cmd, t_env *envi, t_all *all);
-void	cmd_exit(t_env *envi);
+void	cmd_exit(char **split);
+void	easter_egg(void);
 
 // utils
+int		ft_atoi(char *str);
 int		ft_splitlen(char **str);
 int		ft_strcmp(const char *str1, const char *str2);
 char	**ft_split(char const *s, char c);
@@ -121,6 +123,12 @@ int		ft_isalnum(int c);
 void	*ft_calloc(size_t number, size_t size);
 void	ft_bzero(void *s, size_t n);
 char	*ft_strtrim(char const *s1, char const *set);
+void	dup_fd(t_all *all);
+void	dup_fd2(t_all *all);
+void	close_fd(t_all *all);
+void	close_fd2(t_all *all);
+int		ft_isdigit(int c);
+int		check_space(char *line);
 
 //parse
 void	parse_redir_pipe(t_all *all, char *line);
@@ -128,24 +136,18 @@ void	print_struct(t_all *all);//временная для вывода
 t_parse	*new_node(void);
 void	work_with_cmd(t_parse *parse);
 void	work_with_files(t_parse *parse);
+void	parse_fd(char *line, t_all *all);
+void	init_env(t_env	**envi, char **env);
 
 // quotes
 void	quot(t_all *all, t_env *envi);
 void	quotes(t_all *all, t_env *envi);
 void	do_two_quotes(t_all **all, t_env *envi);
-void	do_simple_quotes(t_all **all, t_env *envi);
+void	do_simple_quotes(t_all **all);
 void	do_dollar(t_all **all, t_env *envi);
 
-//init
-void	init_env(t_env	**envi, char **env);
-void	work_with_fd(char *line, t_all *all);
-void	dup_fd(t_all *all);
-void	dup_fd2(t_all *all);
-void	close_fd(t_all *all);
-void	close_fd2(t_all *all);
-
 //pipe
-int		pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi);
+int		pipex(char **env, t_all *all, t_env *envi);
 
 //signal
 void	signal_init(void);

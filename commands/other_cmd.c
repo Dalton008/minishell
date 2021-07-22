@@ -6,26 +6,49 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/21 20:06:55 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 14:33:14 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+char	**set_env(t_env *envi)
+{
+	char	**res;
+	t_env	*head;
+	int		i;
+
+	i = 0;
+	head = envi;
+	while (envi)
+	{
+		i++;
+		envi = envi->next;
+	}
+	envi = head;
+	res = malloc(sizeof(char*) * (i + 1));
+	res[i] = NULL;
+	i = 0; 
+	while (envi)
+	{
+		res[i] = ft_strdup(envi->value);
+		i++;
+		envi = envi->next;
+	}
+	return (res);
+}
+
 void	other_cmd(char **cmd, t_env *envi, t_all *all)
 {
-	char	**paths;
 	char	*path;
 	int		status;
 	int		i;
 	int		op;
 	pid_t	pid;
-	int		z;
 	char	**tmp;
 	int		n;
 	int		len;
 	int		len_new_absolut;
-	char	**mas;
 
 	i = 0;
 	n = 0;
@@ -99,7 +122,7 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 			printf("\e[38;5;202mminishell: " "\033[0m%s: command not found\n", all->parse->split2[0]);
 			exit(g_exit_status);
 		}
-		execve(path, tmp, NULL);
+		execve(path, tmp, set_env(envi));
 	}
 	waitpid(pid, &status, WUNTRACED | WCONTINUED);
 	g_exit_status = WEXITSTATUS(status);

@@ -6,30 +6,15 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:44:47 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/22 12:54:49 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 16:23:35 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int	check_space(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_all	*all;
-	pid_t	pid;
 	t_parse	*par;
 	char	*line;
 	char	**split;
@@ -75,7 +60,7 @@ int	main(int argc, char **argv, char **env)
 		parse_redir_pipe(all, line);
 		quot(all, envi);
 		all->parse = head;
-		work_with_fd(line, all);
+		parse_fd(line, all);
 		all->pid = malloc(sizeof(pid_t) * (all->count_pipe + 1));
 		// print_struct(all);
 		if (all->count_pipe != 0)
@@ -83,7 +68,7 @@ int	main(int argc, char **argv, char **env)
 			len_split = ft_splitlen(all->parse->split2);
 			fd_copy[0] = dup(0);
 			fd_copy[1] = dup(1);
-			pipex(len_split, all->parse->split2, env, all, envi);
+			pipex(env, all, envi);
 			dup2(fd_copy[0], 0);
 			dup2(fd_copy[1], 1);
 		}
@@ -98,9 +83,9 @@ int	main(int argc, char **argv, char **env)
 			if (all->parse->count_r > 0)
 				dup_fd2(all);
 			if (ft_strcmp(all->parse->split2[0], "pwd") == 0)
-				cmd_pwd(envi, all);
+				cmd_pwd();
 			else if (ft_strcmp(all->parse->split2[0], "echo") == 0)
-				cmd_echo(ft_splitlen(all->parse->split2), all->parse->split2, envi, all);
+				cmd_echo(ft_splitlen(all->parse->split2), all->parse->split2);
 			else if (ft_strcmp(all->parse->split2[0], "cd") == 0)
 				cmd_cd(envi, all->parse->split[1]);
 			else if (ft_strcmp(all->parse->split2[0], "env") == 0)
@@ -110,7 +95,9 @@ int	main(int argc, char **argv, char **env)
 			else if (ft_strcmp(all->parse->split2[0], "unset") == 0)
 				cmd_unset(envi, all->parse->split[1]);
 			else if (ft_strcmp(all->parse->split2[0], "exit") == 0)
-				cmd_exit(envi);
+				cmd_exit(all->parse->split2);
+			else if (ft_strcmp(line, "работяги") == 0)
+				easter_egg();
 			else if (ft_strcmp(all->parse->split2[0], "<<") == 0)
 			{
 				if (!all->parse->split[1])
@@ -136,24 +123,6 @@ int	main(int argc, char **argv, char **env)
 				printf("\e[38;5;202mminishell: " "\x1b[0m%d: command not found\n", g_exit_status);
 				all->parse->flag = 1;
 				g_exit_status = 127;
-			}
-			else if (ft_strcmp(line, "работяги") == 0)
-			{
-				printf("\x1b[32m░░░░░░░░░░░░░░░░░░░░\n");
-				printf("\x1b[32m░░░░░""\x1b[0mЗАПУСКАЕМ""\x1b[32m░░░░░░\n");
-				printf("\x1b[32m░""\x1b[0mГУСЯ""\x1b[32m░" "\e[1;95m▄▀▀▀▄" "\x1b[0m""\x1b[32m░""\e[38;5;196mРАБОТЯГИ\n");
-				printf("\e[1;95m▄███▀░""\e[38;5;196m◐""\e[1;95m░░░▌""\x1b[32m░░░░░░░░░\n");
-				printf("\x1b[32m░░░░""\e[1;95m▌░░░░░▐""\x1b[32m░░░░░░░░░\n");
-				printf("\x1b[32m░░░░""\e[1;95m▐░░░░░▐""\x1b[32m░░░░░░░░░\n");
-				printf("\x1b[32m░░░░""\e[1;95m▌░░░░░▐▄▄""\x1b[32m░░░░░░░\n");
-				printf("\x1b[32m░░░░""\e[1;95m▌░░░░▄▀\e[38;5;200m▒▒""\e[1;95m▀▀▀▀▄""\x1b[32m\n");
-				printf("\x1b[32m░░░""\e[1;95m▐░░░░▐\e[38;5;200m▒▒▒▒▒▒▒▒""\e[1;95m▀▀▄""\x1b[32m\n");
-				printf("\x1b[32m░░░""\e[1;95m▐░░░░▐▄\e[38;5;200m▒▒▒▒▒▒▒▒▒▒""\e[1;95m▀""\x1b[32m\n");
-				printf("\x1b[32m░░░░""\e[1;95m▀▄░░░░▀▄\e[38;5;200m▒▒▒▒▒▒▒▒▒▒""\e[1;95m▀▄""\x1b[32m\n");
-				printf("\x1b[32m░░░░░░""\e[1;95m▀▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▄▀▄""\x1b[32m\n");
-				printf("\x1b[32m░░░░░░░░░░░""\e[1;95m▌▌""\x1b[32m░""\e[1;95m▌▌""\x1b[32m░░░░░\n");
-				printf("\x1b[32m░░░░░░░░░░░""\e[1;95m▌▌""\x1b[32m░""\e[1;95m▌▌""\x1b[32m░░░░░\n");
-				printf("\x1b[32m░░░░░░░░░""\e[1;95m▄▄▌▌▄▌▌""\x1b[32m░░░░░\n");
 			}
 			else
 			{

@@ -6,11 +6,11 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 11:28:13 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/19 17:54:50 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 15:04:07 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 int	env_size(char **env)
 {

@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 12:10:33 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/21 17:19:36 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 16:57:19 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,53 @@ void	print_struct(t_all *all)
 	}
 }
 
+int	count_with_quotes(char *line)
+{
+	int	count;
+	int	i;
+	int	x;
+	int	q;
+
+	count = 0;
+	i = 0;
+	q = 1;
+	while (line[i] && line[i] != '|')
+	{
+		if (line[i] == ' ')
+			i++;
+		if (line[i] == '"' || line[i] == '\'')
+			q++;
+		if (q % 2 != 0)
+		{
+			x = i;
+			while (line[x] && line[x] != ' ')
+				x++;
+			i = x;
+		}
+		else
+		{
+			x = i;
+			x++;
+			while (line[x] && (line[x] != '"' || line[i] == '\''))
+				x++;
+			if (line[x + 1] && line[x + 1] != ' ')
+			{
+				x++;
+				while (line[x] && line[x] != ' ')
+					x++;
+				i = x + 1;
+			}
+			else
+				i = x + 1;
+			q++;
+		}
+		count++;
+	}
+	return (count);
+}
+
 void	work_with_quotes(char *line, t_parse *parse)
 {
-	int q1 = 1;
 	int	len;
 	int i_sp;
 	int x;
@@ -90,7 +134,7 @@ void	work_with_quotes(char *line, t_parse *parse)
 	i = 0;
 	q = 1;
 	i_sp = 0;
-	parse->split = malloc(sizeof(char *) * 10);
+	parse->split = malloc(sizeof(char *) * (count_with_quotes(line) + 1));
 	while (line[i] && line[i] != '|')
 	{
 		len = 0;
@@ -168,7 +212,6 @@ void	work_with_quotes(char *line, t_parse *parse)
 			}
 			q++;
 		}
-		// printf("<%s>\n", parse->split[i_sp]);
 		i_sp++;
 	}
 	parse->split[i_sp] = NULL;
@@ -189,8 +232,6 @@ void	parse_redir_pipe(t_all *all, char *line)
 	{
 		if (line[i] == '"' || line[i] == '\'')
 			q++;
-		// if (line[0] == '.')
-		// 	line++;
 		if (line[i] == '|' && line[i - 1] != '"' && q % 2 != 0)
 		{
 			all->parse->line = ft_substr(line, n, i);
@@ -240,7 +281,6 @@ void	parse_redir_pipe(t_all *all, char *line)
 		if (line[i] == '\0')
 		{
 			all->parse->line = ft_substr(line, n, i);
-			// printf("%s\n", all->parse->line);
 			if (!ft_strchr(line, '"'))
 				all->parse->split = ft_split(all->parse->line, ' ');
 			else

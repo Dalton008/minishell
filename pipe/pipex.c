@@ -16,12 +16,12 @@ int	check_cmd(t_all *all, t_env *envi)
 {
 	if (ft_strcmp(all->parse->split2[0], "pwd") == 0)
 	{
-		cmd_pwd(envi, all);
+		cmd_pwd();
 		return (1);
 	}
 	else if (ft_strcmp(all->parse->split2[0], "echo") == 0)
 	{
-		cmd_echo(ft_splitlen(all->parse->split2), all->parse->split2, envi, all);
+		cmd_echo(ft_splitlen(all->parse->split2), all->parse->split2);
 		return (1);
 	}
 	else if (ft_strcmp(all->parse->split2[0], "cd") == 0)
@@ -46,7 +46,7 @@ int	check_cmd(t_all *all, t_env *envi)
 	}
 	else if (ft_strcmp(all->parse->split2[0], "exit") == 0)
 	{
-		cmd_exit(envi);
+		cmd_exit(all->parse->split2);
 		return (1);
 	}
 	return (0);
@@ -71,7 +71,7 @@ int	precheck(char *cmd)
 	return (0);
 }
 
-int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
+int	pipex(char **env, t_all *all, t_env *envi)
 {
 	t_pipe	pipes;
 	pid_t	*pid;

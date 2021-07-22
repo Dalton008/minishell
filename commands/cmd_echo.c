@@ -6,53 +6,50 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 17:11:23 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/21 18:11:49 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/22 17:02:59 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
+void	without_n(char **argv)
 {
-	t_env	*head;
 	int		i;
-	int		n;
-	int		key_len;
-	int		cmd_not_found;
 
 	i = 0;
-	head = envi;
-	key_len = 0;
+	i = 2;
+	while (argv[i] && !ft_strchr("<>", argv[i][0]))
+	{
+		if (ft_strcmp(argv[i], "-n") != 0)
+			printf("%s", argv[i]);
+		if (argv[i + 1] != 0 && !ft_strchr("<>", argv[i + 1][0]) \
+			&& ft_strcmp(argv[i], "-n") != 0)
+			printf(" ");
+		i++;
+	}
+}
+
+void	cmd_echo(int argc, char **argv)
+{
+	int		i;
+
+	i = 0;
 	if (argc == 1)
 		printf("\n");
 	else
 	{
 		if (ft_strcmp(argv[1], "-n") == 0)
-		{
-			i = 2;
-			while (argv[i] && !ft_strchr("<>", argv[i][0]))
-			{
-				envi = head;
-				if (ft_strcmp(argv[i], "-n") != 0)
-					ft_putstr_fd(argv[i], all->redirfd[all->fd_iter_redir][1]);
-				if (argv[i + 1] != 0 && !ft_strchr("<>", argv[i + 1][0]) && ft_strcmp(argv[i], "-n") != 0)
-					ft_putstr_fd(" ", all->redirfd[all->fd_iter_redir][1]);
-				i++;
-			}
-		}
+			without_n(argv);
 		else
 		{
 			i = 1;
 			while (argv[i] && !ft_strchr("<>", argv[i][0]))
 			{
-				envi = head;
-				ft_putstr_fd(argv[i], all->redirfd[all->fd_iter_redir][1]);
-				ft_putstr_fd(" ", all->redirfd[all->fd_iter_redir][1]);
+				printf("%s ", argv[i]);
 				i++;
 			}
-			ft_putstr_fd("\n", all->redirfd[all->fd_iter_redir][1]);
+			printf("\n");
 		}
 	}
 	g_exit_status = 0;
-	return (0);
 }

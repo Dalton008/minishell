@@ -1,51 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 18:10:06 by lgarg             #+#    #+#             */
-/*   Updated: 2021/07/22 16:23:48 by mjammie          ###   ########.fr       */
+/*   Created: 2021/04/16 14:26:44 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/22 15:47:09 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_splitlen(char **str)
+int	ft_atoi(char *str)
 {
-	int	i;
+	int	minus;
+	int	num_count;
+	int	result;
 
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	ft_check(char c, const char *set)
-{
-	int	i;
-
-	i = 0;
-	while (set[i])
+	minus = 1;
+	result = 0;
+	num_count = 19;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-')
 	{
-		if (set[i] == c)
-			return (1);
-		i++;
+		minus = minus * -1;
+		str++;
 	}
-	return (0);
-}
-
-int	check_space(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
+	else if (*str == '+')
+		str++;
+	while (*str >= 48 && *str <= 57)
 	{
-		if (line[i] != ' ')
-			return (0);
-		i++;
+		if (!num_count--)
+			return ((1 + minus) / (-2));
+		result = result * 10 + *str - 48;
+		str++;
 	}
-	return (1);
+	return (result * minus);
 }
