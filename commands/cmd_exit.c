@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 19:17:27 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/12 12:44:41 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/21 20:11:00 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,5 @@
 void	cmd_exit(t_env *envi)
 {
 	ft_putstr_fd("exit\n", 1);
-	exit(0);
+	exit(g_exit_status);
 }

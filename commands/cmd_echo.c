@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 17:11:23 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/21 17:35:16 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/21 18:11:49 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,10 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 	int		n;
 	int		key_len;
 	int		cmd_not_found;
-	// int		z;
 
 	i = 0;
 	head = envi;
 	key_len = 0;
-	// z = 1;
-	// while (z < all->parse->count_r)
-	// {
-	// 	all->fd_iter_redir++;
-	// 	z++;
-	// }
-	// dup_fd(all);
 	if (argc == 1)
 		printf("\n");
 	else
@@ -61,7 +53,6 @@ char	*cmd_echo(int argc, char **argv, t_env *envi, t_all *all)
 			ft_putstr_fd("\n", all->redirfd[all->fd_iter_redir][1]);
 		}
 	}
-	// close_fd(all);
 	g_exit_status = 0;
 	return (0);
 }

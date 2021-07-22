@@ -52,6 +52,25 @@ int	check_cmd(t_all *all, t_env *envi)
 	return (0);
 }
 
+int	precheck(char *cmd)
+{
+	if (ft_strcmp(cmd, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "env") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "export") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "exit") == 0)
+		return (1);
+	return (0);
+}
+
 int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
 {
 	t_pipe	pipes;
@@ -84,19 +103,22 @@ int	pipex(int count_pipes, char **split, char **env, t_all *all, t_env *envi)
 			g_exit_status = 127;
 			return (1);
 		}
-		while (all->paths[n])
+		if (!precheck(all->parse->split2[0]))
 		{
-			pipes.pt = join_path_to_file(all->paths[n], all->parse->split2[0], all);
-			pipes.op = open(pipes.pt, O_RDONLY);
-			if (pipes.op != -1)
+			while (all->paths[n])
+			{
+				pipes.pt = join_path_to_file(all->paths[n], all->parse->split2[0], all);
+				pipes.op = open(pipes.pt, O_RDONLY);
+				if (pipes.op != -1)
+					break ;
+				n++;
+			}
+			if (pipes.op == -1)
+			{
+				g_exit_status = 127;
+				printf("\e[38;5;202mminishell: " "\033[0m%s: command not found\n", split_cmd[0]);
 				break ;
-			n++;
-		}
-		if (pipes.op == -1)
-		{
-			g_exit_status = 127;
-			printf("\e[38;5;202mminishell: " "\033[0m%s: command not found\n", split_cmd[0]);
-			break ;
+			}
 		}
 		pid[i] = fork();
 		if (pid[i] == 0)

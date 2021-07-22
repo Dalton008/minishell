@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/21 18:05:39 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/21 20:06:55 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	other_cmd(char **cmd, t_env *envi, t_all *all)
 	int		n;
 	int		len;
 	int		len_new_absolut;
+	char	**mas;
 
 	i = 0;
 	n = 0;
