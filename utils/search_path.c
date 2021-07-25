@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   search_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/18 19:02:40 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/22 19:58:31 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/23 16:08:17 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/24 22:58:33 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+void	search_path(t_all *all, char *cmd)
 {
-	char	*result;
-	size_t	n;
+	int		n;
+	char	*ff;
 
 	n = 0;
-	if (!s)
-		return (0);
-	result = (char *)malloc(len - start + 1);
-	if (result == 0)
-		return (0);
-	while (start < len)
+	ff = NULL;
+	while (all->paths[n])
 	{
-		result[n] = s[start];
+		all->parse->pt_cmd = join_path_to_file(all->paths[n], cmd, all);
+		ff = all->parse->pt_cmd;
+		all->parse->fd_for_open = open(all->parse->pt_cmd, O_RDONLY);
+		if (all->parse->fd_for_open != -1)
+			break ;
+		free(ff);
 		n++;
-		start++;
 	}
-	result[n] = 0;
-	return (result);
 }

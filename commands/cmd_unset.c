@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 14:37:25 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/17 19:19:54 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/24 19:26:43 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	cmd_unset(t_env *envi, char *key)
 			temp = envi;
 			envi = envi->next;
 			pred->next = envi;
+			free(temp->value);
+			free(temp);
 			break ;
 		}
 		pred = envi;

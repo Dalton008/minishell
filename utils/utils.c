@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 18:10:06 by lgarg             #+#    #+#             */
-/*   Updated: 2021/07/22 16:23:48 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/23 20:08:43 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,17 @@ int	check_space(char *line)
 		i++;
 	}
 	return (1);
+}
+
+int	list_len(t_env *envi)
+{
+	int	len_envi;
+
+	len_envi = 0;
+	while (envi)
+	{
+		len_envi++;
+		envi = envi->next;
+	}
+	return (len_envi);
 }

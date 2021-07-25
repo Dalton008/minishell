@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/18 19:02:40 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/22 19:58:31 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/23 16:35:32 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/23 16:35:53 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	**set_env(t_env *envi)
 {
-	char	*result;
-	size_t	n;
+	char	**res;
+	int		i;
 
-	n = 0;
-	if (!s)
-		return (0);
-	result = (char *)malloc(len - start + 1);
-	if (result == 0)
-		return (0);
-	while (start < len)
+	i = 0;
+	res = malloc(sizeof(char*) * (list_len(envi) + 1));
+	res[list_len(envi)] = NULL;
+	i = 0; 
+	while (envi)
 	{
-		result[n] = s[start];
-		n++;
-		start++;
+		res[i] = ft_strdup(envi->value);
+		i++;
+		envi = envi->next;
 	}
-	result[n] = 0;
-	return (result);
+	return (res);
 }

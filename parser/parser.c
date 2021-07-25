@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 12:13:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/22 14:34:34 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/24 15:06:33 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,14 @@ int	quotes_closed(t_all *all)
 void	quotes(t_all *all, t_env *envi)
 {
 	int	i;
+	char	*for_free;
 
 	i = 0;
+	for_free = all->parse->split[0];
 	all->parse->split[0] = ft_strtrim(all->parse->split[0], " ");
+	free(for_free);
 	while (all->parse->split[i])
 	{
-		// if (all->parse->split[0])
 		all->parse->i_1 = 0;
 		all->parse->i_2 = 0;
 		all->parse->line1 = all->parse->split[i];
@@ -99,7 +101,6 @@ void	quotes(t_all *all, t_env *envi)
 		}
 		all->parse->line2[all->parse->i_2] = '\0';
 		all->parse->split2[i] = all->parse->line2;
-		// free(all->parse->line1);
 		i++;
 	}
 	all->parse->split2[i] = NULL;

@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 18:23:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/22 16:57:50 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/24 22:32:48 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,19 @@
 
 void	set_pwd(t_env **envi, char *oldpwd, char *pwd, t_env *head)
 {
+	char	*ff;
+
 	while (envi)
 	{
 		if (ft_strncmp((*envi)->value, "OLDPWD", 6) == 0)
 		{
 			(*envi)->value[0] = 0;
+			ff = (*envi)->value;
 			(*envi)->value = ft_strjoin((*envi)->value, "OLDPWD=");
+			free(ff);
+			ff = (*envi)->value;
 			(*envi)->value = ft_strjoin((*envi)->value, oldpwd);
+			free(ff);
 			break ;
 		}
 		(*envi) = (*envi)->next;
@@ -31,8 +37,12 @@ void	set_pwd(t_env **envi, char *oldpwd, char *pwd, t_env *head)
 		if (ft_strncmp((*envi)->value, "PWD", 3) == 0)
 		{
 			(*envi)->value[0] = 0;
+			ff = (*envi)->value;
 			(*envi)->value = ft_strjoin((*envi)->value, "PWD=");
+			free(ff);
+			ff = (*envi)->value;
 			(*envi)->value = ft_strjoin((*envi)->value, pwd);
+			free(ff);
 			break ;
 		}
 		(*envi) = (*envi)->next;
@@ -62,6 +72,7 @@ void	cmd_cd(t_env *envi, char *str)
 	else
 		set_pwd(&envi, oldpwd, pwd, head);
 	g_exit_status = 0;
+	free(buf);
+	free(pwd);
+	free(oldpwd);
 }
-
-//getcwd выделяет память!

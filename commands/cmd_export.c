@@ -6,178 +6,123 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/22 14:54:40 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/24 19:23:56 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	sort_envi(t_env *envi)
+void	only_export(t_env *envi)
 {
 	int		i;
-	int		n;
 	int		k;
 	char	**mas;
-	char	*tmp;
-	t_env	*head;
-	int		flag;
-	int		len_envi;
-	int		len_value;
 
 	i = 0;
-	n = 0;
 	k = 0;
-	flag = 0;
-	head = envi;
-	len_envi = 0;
-	len_value = 0;
-	while (envi)
-	{
-		len_envi++;
-		envi = envi->next;
-	}
-	envi = head;
-	mas = malloc(sizeof(char *) * (len_envi + 1));
-	mas[len_envi] = NULL;
-	while (envi)
-	{
-		n = 0;
-		k = 0;
-		len_value = ft_strlen(envi->value);
-		mas[i] = malloc(len_value + 3);
-		mas[i][len_value + 2] = '\0';
-		while (envi->value[n])
-		{
-			if (envi->value[n] == '=')
-			{
-				mas[i][k] = envi->value[n];
-				k++;
-				mas[i][k] = '"';
-			}
-			else
-				mas[i][k] = envi->value[n];
-			n++;
-			k++;
-			if (envi->value[n] == 0 && ft_strchr(envi->value, '='))
-				mas[i][k] = '"';
-		}
-		envi = envi->next;
-		i++;
-	}
-	i = 0;
-	while (mas[i] && flag == 0)
-	{
-		flag = 1;
-		i = 0;
-		while (i < len_envi - 1)
-		{
-			if (ft_strcmp(mas[i], mas[i + 1]) > 0)
-			{
-				tmp = mas[i];
-				mas[i] = mas[i + 1];
-				mas[i + 1] = tmp;
-				flag = 0;
-			}
-			i++;
-		}
-		len_envi--;
-	}
+	mas = malloc(sizeof(char *) * (list_len(envi) + 1));
+	mas[list_len(envi)] = NULL;
+	create_array(envi, mas, &i, &k);
+	sort_array(mas, list_len(envi));
 	i = 0;
 	while (mas[i])
 	{
 		printf("declare -x %s\n", mas[i]);
 		i++;
 	}
+	i = 0;
+	while (mas[i])
+	{
+		free(mas[i]);
+		i++;
+	}
+	free(mas);
 	g_exit_status = 0;
 }
 
 int	check_key(t_env *envi, char	*str)
 {
+	int	len;
+
+	len = 0;
+	while (str[len] && str[len] != '=')
+		len++;
 	while (envi)
 	{
-		if (ft_strncmp(envi->value, str, ft_strlen(str)) == 0)
+		if (ft_strncmp(envi->value, str, len) == 0)
 			return (1);
 		envi = envi->next;
 	}
 	return (0);
 }
 
+void	last_item(t_env *envi, int k, char **argv)
+{
+	while (envi->next)
+		envi = envi->next;
+	envi->next = malloc(sizeof(t_env));
+	envi = envi->next;
+	envi->value = ft_strdup(argv[k]);
+	envi->next = NULL;
+}
+
+void	work_with_equals(t_env *envi, char **split)
+{
+	int	len_value;
+	int	i;
+	int	n;
+
+	len_value = 0;
+	i = 0;
+	n = 0;
+	while (ft_strncmp(envi->value, split[0], ft_strlen(split[0])) != 0)
+		envi = envi->next;
+	if (ft_strchr(envi->value, '='))
+		while (envi->value[i++] != '=');
+	else
+	{
+		envi->value = ft_strjoin(envi->value, "=");
+		i++;
+	}
+	if (!split[1])
+		envi->value[i] = '\0';
+	else
+	{
+		len_value = ft_strlen(split[1]);
+		while (len_value--)
+			envi->value[i++] = split[1][n++];
+		envi->value[i] = '\0';
+	}
+}
+
 void	cmd_export(t_env *envi, char **argv, int argc, t_all *all)
 {
 	char	**split;
-	int		i;
-	int		len_value;
-	int		n;
 	int		k;
-	t_env	*head;
 
-	i = 0;
-	n = 0;
 	k = 1;
-	head = envi;
-	len_value = 0;
 	if (argc >= 2 && all->parse->count_r == 0)
 	{
 		while (k < argc)
 		{
-			i = 0;
-			n = 0;
-			envi = head;
-			if (check_key(envi, argv[k]))
-			{
-				k++;
-				continue ;
-			}
 			if (ft_strchr(argv[k], '='))
 			{
 				split = ft_split(argv[k], '=');
 				if (check_key(envi, split[0]))
-				{
-					while (ft_strncmp(envi->value, split[0], ft_strlen(split[0])) != 0)
-						envi = envi->next;
-					if (ft_strchr(envi->value, '='))
-					{
-						while (envi->value[i] != '=')
-							i++;
-					}
-					else
-					{
-						envi->value = ft_strjoin(envi->value, "=");
-						i++;
-					}
-					i++;
-					len_value = ft_strlen(split[1]);
-					while (len_value--)
-					{
-						envi->value[i] = split[1][n];
-						n++;
-						i++;
-					}
-					envi->value[i] = '\0';
-				}
+					work_with_equals(envi, split);
 				else
-				{
-					while (envi->next)
-						envi = envi->next;
-					envi->next = malloc(sizeof(t_env));
-					envi = envi->next;
-					envi->value = ft_strdup(argv[k]);
-					envi->next = NULL;
-				}
+					last_item(envi, k, argv);
 			}
-			else
-			{
-				while (envi->next)
-					envi = envi->next;
-				envi->next = malloc(sizeof(t_env));
-				envi = envi->next;
-				envi->value = ft_strdup(argv[k]);
-				envi->next = NULL;
-			}
+			else if (!check_key(envi, argv[k]))
+				last_item(envi, k, argv);
 			k++;
 		}
+		k = 0;
+		while (split[k])
+			free(split[k++]);
+		free(split);
 		g_exit_status = 0;
 	}
 	else if (argc == 1 || all->parse->count_r != 0)
-		sort_envi(envi);
+		only_export(envi);
 }

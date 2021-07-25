@@ -1,34 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   utils_for_pipex.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/18 19:02:40 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/22 19:58:31 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/23 20:02:55 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/23 20:08:31 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+void	dup_for_redir(t_all *all)
 {
-	char	*result;
-	size_t	n;
+	int	m;
 
-	n = 0;
-	if (!s)
-		return (0);
-	result = (char *)malloc(len - start + 1);
-	if (result == 0)
-		return (0);
-	while (start < len)
+	m = 1;
+	while (m < all->parse->count_r)
 	{
-		result[n] = s[start];
-		n++;
-		start++;
+		all->fd_iter_redir++;
+		m++;
 	}
-	result[n] = 0;
-	return (result);
+	if (all->parse->count_r > 0)
+		dup_fd2(all);
+}
+
+void	wait_and_close(t_all *all)
+{
+	int	i;
+
+	i = 0;
+	while (i < all->count_pipe + 1)
+	{
+		waitpid(all->pid[i], NULL, 0);
+		i++;
+	}
+	close(all->pfd[0][0]);
+	close(all->pfd[0][1]);
+	close(all->pfd[1][0]);
+	close(all->pfd[1][1]);
 }

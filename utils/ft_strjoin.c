@@ -6,13 +6,13 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 19:31:42 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/09 15:17:30 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/24 14:58:33 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*result;
 	int		len_str1;
