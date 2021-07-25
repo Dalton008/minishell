@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 16:30:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/24 22:54:31 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/25 15:54:39 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ void	cut_array(char **cmd, t_all *all, char **tmp)
 		}
 		i++;
 	}
+	tmp[n] = NULL;
 }

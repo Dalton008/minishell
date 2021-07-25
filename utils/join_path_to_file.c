@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 14:06:41 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/24 23:11:11 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/25 20:25:56 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*join_path_to_file(char *path, char *cmd, t_all *all)
 	char	*ff;
 
 	result = NULL;
-	printf("%s\n", cmd);
 	if (ft_strchr(cmd, '/'))
 	{
 		all->absol = 1;

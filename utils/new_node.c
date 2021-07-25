@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   new_node.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 18:07:23 by lgarg             #+#    #+#             */
-/*   Updated: 2021/07/25 18:03:50 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/25 18:00:18 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/25 18:06:41 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_bzero(void *s, size_t n)
+t_parse	*new_node(void)
 {
-	size_t			i;
-	unsigned char	*str;
+	t_parse	*new;
 
-	i = 0;
-	str = (unsigned char *)s;
-	while (i < n)
-	{
-		str[i] = '\0';
-		i++;
-	}
+	new = (struct s_parse *)malloc(sizeof(t_parse));
+	new->count_r = 0;
+	new->line = NULL;
+	new->cmd = NULL;
+	new->split = NULL;
+	new->next = NULL;
+	return (new);
 }

@@ -6,27 +6,47 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 18:23:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/24 22:32:48 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/25 17:47:47 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	set_pwd(t_env **envi, char *oldpwd, char *pwd, t_env *head)
+void	change_oldpwd(t_env **envi, char *oldpwd)
 {
 	char	*ff;
 
+	ff = NULL;
+	(*envi)->value[0] = 0;
+	ff = (*envi)->value;
+	(*envi)->value = ft_strjoin((*envi)->value, "OLDPWD=");
+	free(ff);
+	ff = (*envi)->value;
+	(*envi)->value = ft_strjoin((*envi)->value, oldpwd);
+	free(ff);
+}
+
+void	change_pwd(t_env **envi, char *pwd)
+{
+	char	*ff;
+
+	ff = NULL;
+	(*envi)->value[0] = 0;
+	ff = (*envi)->value;
+	(*envi)->value = ft_strjoin((*envi)->value, "PWD=");
+	free(ff);
+	ff = (*envi)->value;
+	(*envi)->value = ft_strjoin((*envi)->value, pwd);
+	free(ff);
+}
+
+void	set_pwd(t_env **envi, char *oldpwd, char *pwd, t_env *head)
+{
 	while (envi)
 	{
 		if (ft_strncmp((*envi)->value, "OLDPWD", 6) == 0)
 		{
-			(*envi)->value[0] = 0;
-			ff = (*envi)->value;
-			(*envi)->value = ft_strjoin((*envi)->value, "OLDPWD=");
-			free(ff);
-			ff = (*envi)->value;
-			(*envi)->value = ft_strjoin((*envi)->value, oldpwd);
-			free(ff);
+			change_oldpwd(envi, oldpwd);
 			break ;
 		}
 		(*envi) = (*envi)->next;
@@ -36,13 +56,7 @@ void	set_pwd(t_env **envi, char *oldpwd, char *pwd, t_env *head)
 	{
 		if (ft_strncmp((*envi)->value, "PWD", 3) == 0)
 		{
-			(*envi)->value[0] = 0;
-			ff = (*envi)->value;
-			(*envi)->value = ft_strjoin((*envi)->value, "PWD=");
-			free(ff);
-			ff = (*envi)->value;
-			(*envi)->value = ft_strjoin((*envi)->value, pwd);
-			free(ff);
+			change_pwd(envi, pwd);
 			break ;
 		}
 		(*envi) = (*envi)->next;

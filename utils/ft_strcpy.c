@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 18:07:23 by lgarg             #+#    #+#             */
-/*   Updated: 2021/07/25 18:03:50 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/25 16:29:43 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/25 18:04:54 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_strcpy(char *dest, char *src)
 {
-	size_t			i;
-	unsigned char	*str;
+	int	i;
 
 	i = 0;
-	str = (unsigned char *)s;
-	while (i < n)
+	while (src[i] != '\0')
 	{
-		str[i] = '\0';
+		dest[i] = src[i];
 		i++;
 	}
+	dest[i] = '\0';
+	return (dest);
 }

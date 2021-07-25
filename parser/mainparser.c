@@ -6,24 +6,11 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 12:10:33 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/24 21:12:07 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/25 18:00:35 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-t_parse	*new_node(void)
-{
-	t_parse	*new;
-
-	new = (struct s_parse *)malloc(sizeof(t_parse));
-	new->count_r = 0;
-	new->line = NULL;
-	new->cmd = NULL;
-	new->split = NULL;
-	new->next = NULL;
-	return (new);
-}
 
 void	if_pipe(char *line, t_iter *iter, t_all *all)
 {
@@ -98,10 +85,21 @@ void	parse_redir_pipe(t_all *all, char *line)
 	work_with_files(all);
 }
 
+void	new_cmd(t_parse *parse, int i)
+{
+	char	*for_free;
+
+	for_free = parse->cmd;
+	parse->cmd = ft_strjoin(parse->split[i], " ");
+	free(for_free);
+	for_free = parse->cmd;
+	parse->cmd = ft_strjoin(parse->cmd, parse->split[i + 1]);
+	free(for_free);
+}
+
 void	work_with_cmd(t_parse *parse)
 {
 	int		i;
-	char	*for_free;
 
 	while (parse)
 	{
@@ -113,12 +111,7 @@ void	work_with_cmd(t_parse *parse)
 			while (parse->split[i] && parse->split[i + 1] && \
 				!ft_strchr("<>", parse->split[i + 1][0]))
 			{
-				for_free = parse->cmd;
-				parse->cmd = ft_strjoin(parse->split[i], " ");
-				free(for_free);
-				for_free = parse->cmd;
-				parse->cmd = ft_strjoin(parse->cmd, parse->split[i + 1]);
-				free(for_free);
+				new_cmd(parse, i);
 				i++;
 			}
 			if (!parse->cmd)

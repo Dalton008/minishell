@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 13:13:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/24 20:15:19 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/25 17:39:47 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	work_without_space(t_iter *iter, char *line, char **arr)
 void	work_with_space(t_iter *iter, char *line, char **arr)
 {
 	iter->len++;
-	arr[iter->i_sp] = (char *)malloc(iter->len + 1);
+	arr[iter->i_sp] = (char *)malloc(iter->len);
 	arr[iter->i_sp][iter->len] = 0;
 	iter->x = iter->i;
 	iter->n = 0;

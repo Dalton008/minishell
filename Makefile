@@ -2,7 +2,7 @@ NAME = minishell
 
 HEADER = includes/minishell.h
 
-LIST = minishell.c
+LIST = minishell.c for_main.c
 
 LIST_UTILS = $(shell find ./utils -name "*.c")
 

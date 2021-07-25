@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/24 22:27:49 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/25 20:12:54 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@ typedef struct s_parse
 	char			*cmd;
 	char			*line;
 	char			**split;
+	char			**tmp;
 	struct s_parse	*next;
 }				t_parse;
 
 typedef struct s_all
 {
+	char			*readline;
 	pid_t			*pid;
 	int				absol;
 	int				count_fd;
@@ -80,6 +82,10 @@ typedef struct s_all
 	struct s_parse	*parse;
 	int				f;
 }				t_all;
+
+//main
+void	init_all(t_all *all);
+void	double_reverse_redir(char *line, t_all *all, t_parse *par);
 
 //readline
 char	*readline(const char *prompt);
@@ -132,7 +138,12 @@ void	sort_array(char **mas, int len_envi);
 void	search_path(t_all *all, char *cmd);
 void	cut_array(char **cmd, t_all *all, char **tmp);
 char	**set_env(t_env *envi);
-int		check(t_all *all);
+char	*ft_itoa(int n);
+int		ft_size(int n);
+char	*ft_strcpy(char *dest, char *src);
+void	free_array(char **array);
+t_parse	*new_node(void);
+int		precheck(char *cmd);
 
 //parse
 void	parse_redir_pipe(t_all *all, char *line);
@@ -157,6 +168,7 @@ void	do_dollar(t_all **all, t_env *envi);
 void	pipex(t_all *all, t_env *envi);
 void	dup_for_redir(t_all *all);
 void	wait_and_close(t_all *all);
+int		check_cmd(t_all *all, t_env *envi);
 
 //signal
 void	signal_init(void);

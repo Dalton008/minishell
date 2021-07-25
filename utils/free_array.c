@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   free_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 18:07:23 by lgarg             #+#    #+#             */
-/*   Updated: 2021/07/25 18:03:50 by mjammie          ###   ########.fr       */
+/*   Created: 2021/07/25 17:55:21 by mjammie           #+#    #+#             */
+/*   Updated: 2021/07/25 17:55:35 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_bzero(void *s, size_t n)
+void	free_array(char **array)
 {
-	size_t			i;
-	unsigned char	*str;
+	int	k;
 
-	i = 0;
-	str = (unsigned char *)s;
-	while (i < n)
-	{
-		str[i] = '\0';
-		i++;
-	}
+	k = 0;
+	while (array[k])
+		free(array[k++]);
+	free(array);
 }

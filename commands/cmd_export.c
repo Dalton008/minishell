@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/24 19:23:56 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/25 20:35:43 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,30 @@ void	last_item(t_env *envi, int k, char **argv)
 
 void	work_with_equals(t_env *envi, char **split)
 {
-	int	len_value;
-	int	i;
-	int	n;
+	int		len_value;
+	t_iter	iter;
 
 	len_value = 0;
-	i = 0;
-	n = 0;
+	iter.i = 0;
+	iter.n = 0;
 	while (ft_strncmp(envi->value, split[0], ft_strlen(split[0])) != 0)
 		envi = envi->next;
 	if (ft_strchr(envi->value, '='))
-		while (envi->value[i++] != '=');
+		while (envi->value[iter.i++] != '=')
+			;
 	else
 	{
 		envi->value = ft_strjoin(envi->value, "=");
-		i++;
+		iter.i++;
 	}
 	if (!split[1])
-		envi->value[i] = '\0';
+		envi->value[iter.i] = '\0';
 	else
 	{
 		len_value = ft_strlen(split[1]);
 		while (len_value--)
-			envi->value[i++] = split[1][n++];
-		envi->value[i] = '\0';
+			envi->value[iter.i++] = split[1][iter.n++];
+		envi->value[iter.i] = '\0';
 	}
 }
 
@@ -117,10 +117,7 @@ void	cmd_export(t_env *envi, char **argv, int argc, t_all *all)
 				last_item(envi, k, argv);
 			k++;
 		}
-		k = 0;
-		while (split[k])
-			free(split[k++]);
-		free(split);
+		free_array(split);
 		g_exit_status = 0;
 	}
 	else if (argc == 1 || all->parse->count_r != 0)
