@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:15:20 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/25 20:35:43 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/26 16:19:36 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	only_export(t_env *envi)
 	k = 0;
 	mas = malloc(sizeof(char *) * (list_len(envi) + 1));
 	mas[list_len(envi)] = NULL;
-	create_array(envi, mas, &i, &k);
+	create_array(envi, mas, i, k);
+	printf("tut\n");
 	sort_array(mas, list_len(envi));
-	i = 0;
 	while (mas[i])
 	{
 		printf("declare -x %s\n", mas[i]);

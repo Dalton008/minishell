@@ -6,38 +6,38 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 16:02:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/23 20:08:41 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/26 16:22:59 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	create_array(t_env *envi, char **mas, int *i, int *k)
+void	create_array(t_env *envi, char **mas, int i, int k)
 {
 	int	n;
 
 	while (envi)
 	{
 		n = 0;
-		(*k) = 0;
-		mas[(*i)] = malloc(ft_strlen(envi->value) + 3);
-		mas[(*i)][ft_strlen(envi->value) + 2] = '\0';
+		k = 0;
+		mas[i] = malloc(ft_strlen(envi->value) + 3);
+		mas[i][ft_strlen(envi->value) + 2] = '\0';
 		while (envi->value[n])
 		{
 			if (envi->value[n] == '=')
 			{
-				mas[(*i)][(*k)++] = envi->value[n];
-				mas[(*i)][(*k)] = '"';
+				mas[i][k++] = envi->value[n];
+				mas[i][k] = '"';
 			}
 			else
-				mas[(*i)][(*k)] = envi->value[n];
+				mas[i][k] = envi->value[n];
 			n++;
-			(*k)++;
+			k++;
 			if (envi->value[n] == 0 && ft_strchr(envi->value, '='))
-				mas[(*i)][(*k)] = '"';
+				mas[i][k] = '"';
 		}
 		envi = envi->next;
-		(*i)++;
+		i++;
 	}
 }
 

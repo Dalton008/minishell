@@ -6,13 +6,13 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:44:47 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/25 20:38:40 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/26 16:44:41 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	without_pipes(char *line, t_all *all, t_env *envi, t_parse *par)
+void	without_pipes(char *line, t_all *all, t_env *envi)
 {
 	int	x;
 
@@ -27,7 +27,7 @@ void	without_pipes(char *line, t_all *all, t_env *envi, t_parse *par)
 	if (!check_cmd(all, envi))
 	{
 		if (ft_strcmp(all->parse->split2[0], "<<") == 0)
-			double_reverse_redir(line, all, par);
+			double_reverse_redir(line, all);
 		else if (ft_strcmp(all->parse->split[0], "$?") == 0)
 		{
 			printf("mminishell: %d: command not found\n", g_exit_status);
@@ -71,7 +71,7 @@ void	if_have_pipes(t_all *all, t_env *envi)
 	dup2(fd_copy[1], 1);
 }
 
-static void	main_parse(t_all *all, t_env *envi, t_parse *par)
+static void	main_parse(t_all *all, t_env *envi)
 {
 	t_all	*ha;
 	t_parse	*head;
@@ -90,7 +90,7 @@ static void	main_parse(t_all *all, t_env *envi, t_parse *par)
 	if (all->count_pipe != 0)
 		if_have_pipes(all, envi);
 	else
-		without_pipes(all->readline, all, envi, par);
+		without_pipes(all->readline, all, envi);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -113,7 +113,7 @@ int	main(int argc, char **argv, char **env)
 		all->readline = readline("\e[38;5;202mminishell🦊 \033[0m");
 		if (check_error(all->readline))
 			continue ;
-		main_parse(all, envi, par);
+		main_parse(all, envi);
 		all->parse = par;
 		free(all->readline);
 	}

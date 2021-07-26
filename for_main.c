@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/25 20:11:31 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/25 20:11:49 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/26 16:19:59 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_all(t_all *all)
 	all->parse->fd_for_open = 0;
 }
 
-void	double_reverse_redir(char *line, t_all *all, t_parse *par)
+void	double_reverse_redir(char *line, t_all *all)
 {
 	char	*ff;
 

@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 16:54:03 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/25 20:12:54 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/26 16:20:25 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_all
 
 //main
 void	init_all(t_all *all);
-void	double_reverse_redir(char *line, t_all *all, t_parse *par);
+void	double_reverse_redir(char *line, t_all *all);
 
 //readline
 char	*readline(const char *prompt);
@@ -133,7 +133,7 @@ void	close_fd2(t_all *all);
 int		ft_isdigit(int c);
 int		check_space(char *line);
 int		list_len(t_env *envi);
-void	create_array(t_env *envi, char **mas, int *i, int *k);
+void	create_array(t_env *envi, char **mas, int i, int k);
 void	sort_array(char **mas, int len_envi);
 void	search_path(t_all *all, char *cmd);
 void	cut_array(char **cmd, t_all *all, char **tmp);

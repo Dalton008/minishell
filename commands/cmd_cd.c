@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 18:23:52 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/25 17:47:47 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/26 16:43:22 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ void	set_pwd(t_env **envi, char *oldpwd, char *pwd, t_env *head)
 	g_exit_status = 0;
 }
 
+void	free_pwd(char *buf, char *pwd, char *oldpwd)
+{
+	free(buf);
+	free(pwd);
+	free(oldpwd);
+}
+
 void	cmd_cd(t_env *envi, char *str)
 {
 	char	*oldpwd;
@@ -79,6 +86,7 @@ void	cmd_cd(t_env *envi, char *str)
 	pwd = getcwd(buf, 0);
 	if (dir == -1)
 	{
+		free_pwd(buf, pwd, oldpwd);
 		printf("No such file or directory\n");
 		g_exit_status = 1;
 		return ;
@@ -86,7 +94,5 @@ void	cmd_cd(t_env *envi, char *str)
 	else
 		set_pwd(&envi, oldpwd, pwd, head);
 	g_exit_status = 0;
-	free(buf);
-	free(pwd);
-	free(oldpwd);
+	free_pwd(buf, pwd, oldpwd);
 }

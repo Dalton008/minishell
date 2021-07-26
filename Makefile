@@ -18,7 +18,7 @@ LIST_PREPARSER = $(shell find ./preparser -name "*.c")
 
 READLINE =  -L/Users/$(USER)/.brew/Cellar/readline/8.1/lib/ -lreadline
 
-FLAGS = 
+FLAGS = -Wall -Wextra -Werror
 
 OBJ = $(LIST:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: mjammie <mjammie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 15:43:02 by mjammie           #+#    #+#             */
-/*   Updated: 2021/07/25 20:35:21 by mjammie          ###   ########.fr       */
+/*   Updated: 2021/07/26 16:38:54 by mjammie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ static int	check(t_all *all, char **tmp)
 		printf("\e[38;5;202mminishell: " "\033[0m%s: \
 No such file or directory\n", all->parse->split2[0]);
 		g_exit_status = 127;
-		free(tmp);
+		free_array(tmp);
 		return (1);
 	}
-	if (all->parse->fd_for_open == -1 && !all->absol)
+	if (all->parse->fd_for_open == -1)
 	{
 		g_exit_status = 127;
 		printf("\e[38;5;202mminishell: " "\033[0m%s: \
 command not found\n", all->parse->split2[0]);
-		free(tmp);
+		free_array(tmp);
 		return (1);
 	}
 	return (0);
