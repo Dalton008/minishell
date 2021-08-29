@@ -1,7 +1,7 @@
 # minishell
 
 The objective of this project is to create a simple shell.
-\nImplemented:
+Implemented:
 - cmd:
   ◦ echo with option -n
   ◦ cd with only a relative or absolute path
